@@ -1,0 +1,10 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    background-color: var(--default-background-color);
+    width: 100%;
+    height: var(--default-layout-header-height);
+    position: fixed;
+    top: 0;
+    left: 0;
+}
