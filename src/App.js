@@ -1,7 +1,6 @@
-import MainLayout from '~/layouts/MainLayout';
 import { publicRoutes } from '~/routes';
-
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Dashboard from '~/pages/Dashboard/Dashboard';
 
 function App() {
     return (
@@ -15,9 +14,9 @@ function App() {
                                 key={index}
                                 path={route.path}
                                 element={
-                                    <MainLayout>
+                                    <Dashboard>
                                         <Page />
-                                    </MainLayout>
+                                    </Dashboard>
                                 }
                             />
                         );

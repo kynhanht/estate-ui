@@ -1,0 +1,80 @@
+.header {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 16px;
+    padding-right: 16px;
+    background-color: #438eb9;
+    height: 64px;
+    z-index: 999;
+}
+
+.logo-info {
+    display: flex;
+    align-items: center;
+    color: white;
+    gap: 10px;
+}
+
+.logo-icon {
+    font-size: 30px;
+}
+
+.logo-name {
+    font-size: 20px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    color: white;
+    gap: 10px;
+}
+
+.user-avatar {
+}
+
+.user-name {
+    font-size: 16px;
+}
+
+.content {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-color: rgb(255, 255, 255);
+    padding: 24px;
+    min-height: 1000px;
+    height: 100%;
+}
+
+.footer {
+    height: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 16px;
+}
+
+.footer-content {
+    font-size: 20px;
+    width: 100%;
+    // border-top: 3px double #e5e5e5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-info {
+    color: #478fca;
+    font-weight: bolder;
+}
+
+.footer-social-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
