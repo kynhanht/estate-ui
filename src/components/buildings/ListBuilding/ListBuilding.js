@@ -229,7 +229,6 @@ class ListBuilding extends Component {
 
     render() {
         const { navigate } = this.props.router;
-
         return (
             <>
                 <ContentPageHeader navigate={navigate} title="List Buildings" className={cx('')}></ContentPageHeader>
