@@ -5,6 +5,9 @@ import withRouter from '~/helpers/withRouter';
 import { Button, Checkbox, DatePicker, Divider, Form, Input, InputNumber, Select, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import ContentPageHeader from '~/components/common/ContentPageHeader';
+import { connect } from 'react-redux';
+
+import { createBuilding } from '~/redux/actions/buildingAction';
 
 const cx = classNames.bind(styles);
 
@@ -24,12 +27,14 @@ const normFile = (e) => {
 
 class AddOrEditBuilding extends Component {
     onSubmitForm = (values) => {
-        console.log(values['decorationTime']?.format('DD/MM/YYYY'));
-        console.log(values);
+        const { navigate } = this.props.router;
+        this.props.createBuilding(values, navigate);
     };
 
     render() {
+        console.log('rendering');
         const { navigate } = this.props.router;
+        const { isLoading } = this.props;
         return (
             <div>
                 <ContentPageHeader navigate={navigate} title="Add New Building" className={cx('')} />
@@ -40,12 +45,12 @@ class AddOrEditBuilding extends Component {
                     labelAlign="left"
                     onFinish={this.onSubmitForm}
                 >
-                    <Form.Item label="Building ID" name="buildingId" hidden={true}>
+                    <Form.Item label="Building ID" name="Id" hidden={true}>
                         <Input />
                     </Form.Item>
                     <Form.Item
-                        label="Building Name"
-                        name="buildingName"
+                        label="Name"
+                        name="name"
                         rules={[
                             {
                                 required: true,
@@ -202,7 +207,7 @@ class AddOrEditBuilding extends Component {
                         </Upload>
                     </Form.Item>
                     <Divider />
-                    <Button htmlType="submit" type="primary">
+                    <Button htmlType="submit" type="primary" loading={isLoading}>
                         Save
                     </Button>
                 </Form>
@@ -211,4 +216,13 @@ class AddOrEditBuilding extends Component {
     }
 }
 
-export default withRouter(AddOrEditBuilding);
+const mapStateToProps = (state) => ({
+    building: state.buildingReducer.building,
+    isLoading: state.commonReducer.isLoading,
+});
+
+const mapDispatchToProps = {
+    createBuilding,
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddOrEditBuilding));

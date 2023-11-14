@@ -18,6 +18,7 @@ import {
     Select,
     Checkbox,
     Modal,
+    Skeleton,
 } from 'antd';
 import {
     EditOutlined,
@@ -33,9 +34,19 @@ import { CSVLink } from 'react-csv';
 
 import ReactToPrint from 'react-to-print';
 
+import {
+    searchBuildings,
+    getBuildingDistricts,
+    getBuildingTypes,
+    clearBuildingState,
+} from '~/redux/actions/buildingAction';
+import { getStaffs, clearUserState } from '~/redux/actions/userAction';
+import { setLoading } from '~/redux/actions/commonAction';
+import { connect } from 'react-redux';
+
 const cx = classNames.bind(styles);
 const headers = [
-    { label: 'Building Name', key: 'buildingName' },
+    { label: 'Name', key: 'Name' },
     { label: 'Number Of Basement', key: 'numberOfBasement' },
     { label: 'Address', key: 'address' },
     { label: 'Manager Name', key: 'managerName' },
@@ -47,16 +58,11 @@ const headers = [
 class ListBuilding extends Component {
     constructor(props) {
         super(props);
-        this.handleSubmitForm = this.handleSubmitForm.bind(this);
-        this.handleExportExcel = this.handleExportExcel.bind(this);
-        this.handleEditBuilding = this.handleEditBuilding.bind(this);
-        this.openDeleteCofirmModal = this.openDeleteCofirmModal.bind(this);
-        this.handleDeleteBuilding = this.handleDeleteBuilding.bind(this);
         this.columns = [
             {
-                title: 'Building Name',
-                key: 'buildingName',
-                dataIndex: 'buildingName',
+                title: 'Name',
+                key: 'name',
+                dataIndex: 'name',
                 align: 'left',
                 filters: [
                     {
@@ -68,7 +74,7 @@ class ListBuilding extends Component {
                         value: 'Nam Giao Building Tower',
                     },
                 ],
-                onFilter: (value, record) => record.buildingName.indexOf(value) !== -1,
+                onFilter: (value, record) => record.name.indexOf(value) !== -1,
             },
             {
                 title: 'Number Of Basement',
@@ -141,64 +147,37 @@ class ListBuilding extends Component {
             },
         ];
         this.state = {
-            dataSource: [
-                {
-                    buildingId: 1,
-                    buildingName: 'Nam Giao Building Tower',
-                    numberOfBasement: 3,
-                    address: '59 Phan Xích Long, Phường 2, Quận 1',
-                    managerName: 'Nguyễn Văn Tài',
-                    managerPhone: '0335466',
-                    rentPrice: 300,
-                    serviceFee: '300',
-                },
-                {
-                    buildingId: 2,
-                    buildingName: 'ACM Tower',
-                    numberOfBasement: 5,
-                    address: '96 Cao Thắng, Phường 3, Quận 2',
-                    managerName: 'Nguyễn Văn Tài',
-                    managerPhone: '0335466',
-                    rentPrice: 300,
-                    serviceFee: '300',
-                },
-                {
-                    buildingId: 3,
-                    buildingName: 'Alpha Building Tower',
-                    numberOfBasement: 3,
-                    address: '153 Nguyễn Đình Chiểu, Phường 3, Quận 3',
-                    managerName: 'Nguyễn Văn Tài',
-                    managerPhone: '0335466',
-                    rentPrice: 300,
-                    serviceFee: '300',
-                },
-                {
-                    buildingId: 4,
-                    buildingName: 'IDD Building',
-                    numberOfBasement: 3,
-                    address: '111 Lý Chính Thắng, Phường 1, Quận 1',
-                    managerName: 'Nguyễn Văn Tài',
-                    managerPhone: '0335466',
-                    rentPrice: 300,
-                    serviceFee: '300',
-                },
-            ],
-
+            buildingCriterias: {},
             building: {},
             selectedRowKeys: [],
             isDeletable: false,
         };
     }
+    componentDidMount = async () => {
+        this.props.searchBuildings({});
+        this.props.getBuildingDistricts();
+        this.props.getBuildingTypes();
+        this.props.getStaffs();
+        console.log('did mount');
+    };
 
-    handleSubmitForm(values) {
+    componentWillUnmount = () => {
+        this.props.clearBuildingState();
+        this.props.clearUserState();
+        console.log('will unmount');
+    };
+
+    handleSubmitForm = (values) => {
         console.log(values);
-    }
+        this.setState({ buildingCriterias: values });
+        this.props.searchBuildings(values);
+    };
 
-    handleEditBuilding(building) {
+    handleEditBuilding = (building) => {
         console.log(building);
-    }
+    };
 
-    openDeleteCofirmModal(building) {
+    openDeleteCofirmModal = (building) => {
         this.setState({ ...this.state, building: building });
         Modal.confirm({
             title: 'Confirm',
@@ -210,286 +189,309 @@ class ListBuilding extends Component {
             cancelText: 'Cancel',
             height: 400,
         });
-    }
+    };
 
-    handleDeleteBuilding() {
+    handleDeleteBuilding = () => {
         console.log(this.state.building);
-    }
+    };
 
-    handleExportExcel() {
+    handleDeleteMultipleBuildings = () => {
+        console.log(this.state.selectedRowKeys);
+    };
+
+    handleExportExcel = (buildings) => {
         const excel = new Excel();
         excel
             .addSheet('Building_List')
             .addColumns(this.columns.filter((column) => column.title !== 'Action'))
-            .addDataSource(this.state.dataSource, {
+            .addDataSource(buildings, {
                 str2Percent: true,
             })
             .saveAs('Building_List.xlsx');
-    }
+    };
 
     render() {
+        console.log('Render');
         const { navigate } = this.props.router;
-        return (
-            <>
-                <ContentPageHeader navigate={navigate} title="List Buildings" className={cx('')}></ContentPageHeader>
+        const { listResult: buildings = [], pageSize = 4, totalItems = 0 } = this.props.buildingSearch;
+        const staffs = this.props.staffs
+            ? Object.entries(this.props.staffs).map(([key, value]) => ({ value: key, label: value }))
+            : [];
 
-                <Collapse size="small" defaultActiveKey={['1']} expandIconPosition="end">
-                    <Collapse.Panel header="Search" key="1">
-                        <Form layout="vertical" onFinish={this.handleSubmitForm} size="large">
-                            <Row gutter={[24, 8]}>
-                                <Col md={12}>
-                                    <Form.Item label="Building Name" name="buildingName">
-                                        <Input />
-                                    </Form.Item>
-                                </Col>
-                                <Col md={12}>
-                                    <Form.Item label="Rent Area" name="rentArea">
-                                        <InputNumber
-                                            style={{
-                                                width: '100%',
-                                            }}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                            <Row gutter={[24, 8]}>
-                                <Col md={8}>
-                                    <Form.Item label="District" name="districtCode">
-                                        <Select
-                                            style={{
-                                                width: 120,
-                                            }}
-                                            allowClear
-                                            options={[
-                                                {
-                                                    value: 'Q1',
-                                                    label: 'Quận 1',
-                                                },
-                                                {
-                                                    value: 'Q2',
-                                                    label: 'Quận 2',
-                                                },
-                                                {
-                                                    value: 'Q3',
-                                                    label: 'Quận 3',
-                                                },
-                                                {
-                                                    value: 'Q4',
-                                                    label: 'Quận 4',
-                                                },
-                                            ]}
-                                        ></Select>
-                                    </Form.Item>
-                                </Col>
-                                <Col md={8}>
-                                    <Form.Item label="Ward" name="ward">
-                                        <Input />
-                                    </Form.Item>
-                                </Col>
-                                <Col md={8}>
-                                    <Form.Item label="Street" name="street">
-                                        <Input />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                            <Row gutter={[24, 8]}>
-                                <Col md={8}>
-                                    <Form.Item label="Number of Basement" name="numberOfbasement">
-                                        <InputNumber
-                                            style={{
-                                                width: '100%',
-                                            }}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col md={8}>
-                                    <Form.Item label="Direction" name="direction">
-                                        <Input />
-                                    </Form.Item>
-                                </Col>
-                                <Col md={8}>
-                                    <Form.Item label="Level" name="level">
-                                        <Input />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                            <Row gutter={[24, 8]}>
-                                <Col md={6}>
-                                    <Form.Item label="Rent Area From" name="rentAreaFrom">
-                                        <InputNumber
-                                            style={{
-                                                width: '100%',
-                                            }}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col md={6}>
-                                    <Form.Item label="Rent Area To" name="rentAreaTo">
-                                        <InputNumber
-                                            style={{
-                                                width: '100%',
-                                            }}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col md={6}>
-                                    <Form.Item label="Rent Price From" name="rentPriceFrom">
-                                        <InputNumber
-                                            style={{
-                                                width: '100%',
-                                            }}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col md={6}>
-                                    <Form.Item label="Rent Price To" name="rentPriceTo">
-                                        <InputNumber
-                                            style={{
-                                                width: '100%',
-                                            }}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                            <Row gutter={[24, 8]}>
-                                <Col md={9}>
-                                    <Form.Item label="Manager Name" name="managerName">
-                                        <Input />
-                                    </Form.Item>
-                                </Col>
-                                <Col md={9}>
-                                    <Form.Item label="Manager Phone" name="Manager Phone">
-                                        <Input />
-                                    </Form.Item>
-                                </Col>
-                                <Col md={6}>
-                                    <Form.Item label="Staff" name="staffId">
-                                        <Select
-                                            style={{
-                                                width: 200,
-                                            }}
-                                            allowClear
-                                            options={[
-                                                {
-                                                    value: 1,
-                                                    label: 'nguyen van a',
-                                                },
-                                                {
-                                                    value: 2,
-                                                    label: 'nguyen van b',
-                                                },
-                                                {
-                                                    value: 3,
-                                                    label: 'nguyen van c',
-                                                },
-                                            ]}
-                                        ></Select>
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                            <Row gutter={[24, 8]}>
-                                <Col md={24}>
-                                    <Form.Item name="buildingTypes" label="Building Types" initialValue={[]}>
-                                        <Checkbox.Group name="buildingTypes">
-                                            <Checkbox value="NOI_THAT">Nội Thất</Checkbox>
-                                            <Checkbox value="TANG_TRET">Tầng Trệt</Checkbox>
-                                            <Checkbox value="NGUYEN_CAN">Nguyên Căn</Checkbox>
-                                        </Checkbox.Group>
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                            <Row gutter={[24, 8]}>
-                                <Col md={24}>
-                                    <Button htmlType="submit" type="primary">
-                                        Search
-                                        <ArrowRightOutlined />
-                                    </Button>
-                                </Col>
-                            </Row>
-                        </Form>
-                    </Collapse.Panel>
-                </Collapse>
+        const buildingTypes = this.props.buildingTypes
+            ? Object.entries(this.props.buildingTypes).map(([key, value]) => ({ value: key, label: value }))
+            : [];
 
-                <Space
-                    size="small"
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'flex-end',
-                        margin: '20px 0',
-                    }}
-                >
-                    <Button
-                        icon={
-                            <PlusCircleFilled
-                                style={{
-                                    color: '#a069c3',
-                                }}
-                            />
-                        }
-                        size="large"
-                    />
-                    <Button
-                        icon={
-                            <DeleteOutlined
-                                style={{
-                                    color: '#a069c3',
-                                }}
-                            />
-                        }
-                        size="large"
-                        disabled={!this.state.isDeletable}
-                    />
-                </Space>
-                <Typography.Title level={4}>List Buildings</Typography.Title>
-                <Table
-                    dataSource={this.state.dataSource ? this.state.dataSource : []}
-                    size="small"
-                    rowKey="buildingId"
-                    bordered
-                    rowSelection={{
-                        type: 'checkbox',
-                        onChange: (selectedRowKeys) => {
-                            this.setState({
-                                selectedRowKeys: selectedRowKeys,
-                                isDeletable: selectedRowKeys.length > 0,
-                            });
-                        },
-                    }}
-                    columns={this.columns}
-                    pagination={{
-                        pageSizeOptions: ['2', '4', '6', '8', '10'],
-                        showSizeChanger: true,
-                    }}
-                    ref={(el) => (this.componentRef = el)}
-                />
+        const buildingDistricts = this.props.buildingDistricts
+            ? Object.entries(this.props.buildingDistricts).map(([key, value]) => ({ value: key, label: value }))
+            : [];
 
-                <Typography.Text
-                    style={{
-                        marginRight: '20px',
-                    }}
-                >
-                    Export options:
-                </Typography.Text>
-                <Space split={<Divider type="vertical" />}>
-                    <CSVLink
-                        filename={'Building_List.csv'}
-                        data={this.state.dataSource}
-                        headers={headers}
-                        target="_blank"
-                    >
-                        CSV
-                    </CSVLink>
-                    <Typography.Link onClick={this.handleExportExcel}>Excel</Typography.Link>
-                    <ReactToPrint
-                        trigger={() => {
-                            return <Typography.Link>PDF</Typography.Link>;
+        const { isLoading } = this.props;
+
+        if (isLoading) {
+            return (
+                <>
+                    <ContentPageHeader
+                        navigate={navigate}
+                        title="List Buildings"
+                        className={cx('')}
+                    ></ContentPageHeader>
+                    <Skeleton active />
+                </>
+            );
+        } else {
+            return (
+                <>
+                    <ContentPageHeader
+                        navigate={navigate}
+                        title="List Buildings"
+                        className={cx('')}
+                    ></ContentPageHeader>
+
+                    <Collapse size="small" defaultActiveKey={['1']} expandIconPosition="end">
+                        <Collapse.Panel header="Search" key="1">
+                            <Form layout="vertical" onFinish={this.handleSubmitForm} size="large">
+                                <Row gutter={[24, 8]}>
+                                    <Col md={12}>
+                                        <Form.Item label="Name" name="name">
+                                            <Input />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col md={12}>
+                                        <Form.Item label="Rent Area" name="rentArea">
+                                            <InputNumber
+                                                style={{
+                                                    width: '100%',
+                                                }}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                                <Row gutter={[24, 8]}>
+                                    <Col md={8}>
+                                        <Form.Item label="District" name="districtCode">
+                                            <Select
+                                                style={{
+                                                    width: 120,
+                                                }}
+                                                allowClear
+                                                options={buildingDistricts}
+                                            ></Select>
+                                        </Form.Item>
+                                    </Col>
+                                    <Col md={8}>
+                                        <Form.Item label="Ward" name="ward">
+                                            <Input />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col md={8}>
+                                        <Form.Item label="Street" name="street">
+                                            <Input />
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                                <Row gutter={[24, 8]}>
+                                    <Col md={8}>
+                                        <Form.Item label="Number of Basement" name="numberOfBasement">
+                                            <InputNumber
+                                                style={{
+                                                    width: '100%',
+                                                }}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col md={8}>
+                                        <Form.Item label="Direction" name="direction">
+                                            <Input />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col md={8}>
+                                        <Form.Item label="Level" name="level">
+                                            <Input />
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                                <Row gutter={[24, 8]}>
+                                    <Col md={6}>
+                                        <Form.Item label="Rent Area From" name="rentAreaFrom">
+                                            <InputNumber
+                                                style={{
+                                                    width: '100%',
+                                                }}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col md={6}>
+                                        <Form.Item label="Rent Area To" name="rentAreaTo">
+                                            <InputNumber
+                                                style={{
+                                                    width: '100%',
+                                                }}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col md={6}>
+                                        <Form.Item label="Rent Price From" name="rentPriceFrom">
+                                            <InputNumber
+                                                style={{
+                                                    width: '100%',
+                                                }}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col md={6}>
+                                        <Form.Item label="Rent Price To" name="rentPriceTo">
+                                            <InputNumber
+                                                style={{
+                                                    width: '100%',
+                                                }}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                                <Row gutter={[24, 8]}>
+                                    <Col md={9}>
+                                        <Form.Item label="Manager Name" name="managerName">
+                                            <Input />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col md={9}>
+                                        <Form.Item label="Manager Phone" name="Manager Phone">
+                                            <Input />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col md={6}>
+                                        <Form.Item label="Staff" name="staffId">
+                                            <Select
+                                                style={{
+                                                    width: 200,
+                                                }}
+                                                allowClear
+                                                options={staffs}
+                                            ></Select>
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                                <Row gutter={[24, 8]}>
+                                    <Col md={24}>
+                                        <Form.Item name="buildingTypes" label="Building Types" initialValue={[]}>
+                                            <Checkbox.Group options={buildingTypes} />
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                                <Row gutter={[24, 8]}>
+                                    <Col md={24}>
+                                        <Button htmlType="submit" type="primary">
+                                            Search
+                                            <ArrowRightOutlined />
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Form>
+                        </Collapse.Panel>
+                    </Collapse>
+
+                    <Space
+                        size="small"
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            margin: '20px 0',
                         }}
-                        content={() => this.componentRef}
+                    >
+                        <Button
+                            icon={
+                                <PlusCircleFilled
+                                    style={{
+                                        color: '#a069c3',
+                                    }}
+                                />
+                            }
+                            size="large"
+                        />
+                        <Button
+                            icon={
+                                <DeleteOutlined
+                                    style={{
+                                        color: '#a069c3',
+                                    }}
+                                />
+                            }
+                            size="large"
+                            disabled={!this.state.isDeletable}
+                            onClick={this.handleDeleteMultipleBuildings}
+                        />
+                    </Space>
+                    <Typography.Title level={4}>List Buildings</Typography.Title>
+                    <Table
+                        dataSource={buildings}
+                        size="small"
+                        rowKey="id"
+                        bordered
+                        rowSelection={{
+                            type: 'checkbox',
+                            onChange: (selectedRowKeys) => {
+                                this.setState({
+                                    selectedRowKeys: selectedRowKeys,
+                                    isDeletable: selectedRowKeys.length > 0,
+                                });
+                            },
+                        }}
+                        columns={this.columns}
+                        pagination={{
+                            pageSizeOptions: ['2', '4', '6', '8', '10'],
+                            showSizeChanger: true,
+                            defaultPageSize: pageSize,
+                            total: totalItems,
+                            onChange: (page, pageSize) => {
+                                const { buildingCriterias } = this.state;
+                                this.props.searchBuildings({ page, pageSize, ...buildingCriterias });
+                            },
+                        }}
+                        ref={(el) => (this.componentRef = el)}
                     />
-                </Space>
-            </>
-        );
+
+                    <Typography.Text
+                        style={{
+                            marginRight: '20px',
+                        }}
+                    >
+                        Export options:
+                    </Typography.Text>
+                    <Space split={<Divider type="vertical" />}>
+                        <CSVLink filename={'Building_List.csv'} data={buildings} headers={headers} target="_blank">
+                            CSV
+                        </CSVLink>
+                        <Typography.Link onClick={() => this.handleExportExcel(buildings)}>Excel</Typography.Link>
+                        <ReactToPrint
+                            trigger={() => {
+                                return <Typography.Link>PDF</Typography.Link>;
+                            }}
+                            content={() => this.componentRef}
+                        />
+                    </Space>
+                </>
+            );
+        }
     }
 }
 
-export default withRouter(ListBuilding);
+const mapStateToProps = (state) => ({
+    buildingSearch: state.buildingReducer.buildingSearch,
+    buildingDistricts: state.buildingReducer.buildingDistricts,
+    buildingTypes: state.buildingReducer.buildingTypes,
+    staffs: state.userReducer.staffs,
+    isLoading: state.commonReducer.isLoading,
+});
+
+const mapDispatchToProps = {
+    searchBuildings,
+    getBuildingDistricts,
+    getBuildingTypes,
+    clearBuildingState,
+    getStaffs,
+    clearUserState,
+    setLoading,
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ListBuilding));

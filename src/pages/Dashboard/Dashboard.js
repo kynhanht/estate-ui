@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { UserOutlined } from '@ant-design/icons';
 import classNames from 'classnames/bind';
 import styles from './Dashboard.module.scss';
@@ -15,8 +15,10 @@ import {
 } from 'react-icons/md';
 
 import { FaFacebookSquare, FaTwitterSquare, FaYoutubeSquare } from 'react-icons/fa';
-import { Avatar, Breadcrumb, Layout, Menu } from 'antd';
+import { Avatar, Breadcrumb, Layout, Menu, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setError, setMessage } from '~/redux/actions/commonAction';
 
 const cx = classNames.bind(styles);
 
@@ -25,8 +27,21 @@ const { Header, Content, Footer, Sider } = Layout;
 const Dashboard = ({ children }) => {
     const [marginLeft, setMarginLeft] = useState(200);
     const [collapsed, setCollapsed] = useState(false);
-
     const navigate = useNavigate();
+
+    const msg = useSelector((state) => state.commonReducer.message);
+    const err = useSelector((state) => state.commonReducer.error);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        if (msg) {
+            dispatch(setMessage(''));
+            message.success(msg);
+        }
+        if (err) {
+            dispatch(setError(''));
+            message.error(err);
+        }
+    }, [msg, err, dispatch]);
     const menuItems = [
         {
             label: 'Users',

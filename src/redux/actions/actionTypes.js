@@ -1,2 +1,19 @@
+// Building
 export const BUILDING_SET = 'BUILDING_SET';
 export const BUILDINGS_SET = 'BUILDINGS_SET';
+export const BUILDING_SEARCH = 'BUILDINGS_SEARCH';
+export const BUILDING_TYPES = 'BUILDING_TYPES';
+export const BUILDING_DISTRICTS = 'BUILDING_DISTRICTS';
+export const BUILDING_STATE_CLEAR = 'CATEGORY_STATE_CLEAR';
+
+// User
+
+export const USER_SET = 'USER_SET';
+export const USERS_SET = 'USERS_SET';
+export const USER_STATE_CLEAR = 'USER_STATE_CLEAR';
+
+// Common
+
+export const COMMON_ERROR_SET = 'COMMON_ERROR_SET';
+export const COMMON_MESSAGE_SET = 'COMMON_MESSAGE_SET';
+export const COMMON_LOADING_SET = 'COMMON_LOADING_SET';
