@@ -5,4 +5,8 @@ export default class UserSerive {
     getStaffs = async () => {
         return await axios.get(`${API_USER}/staffs`);
     };
+
+    getStaffsByBuildingId = async (buildingId) => {
+        return await axios.get(`${API_USER}/${buildingId}/staffs`);
+    };
 }

@@ -16,7 +16,7 @@ import {
 
 import { FaFacebookSquare, FaTwitterSquare, FaYoutubeSquare } from 'react-icons/fa';
 import { Avatar, Breadcrumb, Layout, Menu, message } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setError, setMessage } from '~/redux/actions/commonAction';
 
@@ -28,7 +28,6 @@ const Dashboard = ({ children }) => {
     const [marginLeft, setMarginLeft] = useState(200);
     const [collapsed, setCollapsed] = useState(false);
     const navigate = useNavigate();
-
     const msg = useSelector((state) => state.commonReducer.message);
     const err = useSelector((state) => state.commonReducer.error);
     const dispatch = useDispatch();
@@ -122,20 +121,19 @@ const Dashboard = ({ children }) => {
         },
     ];
 
-    const breadcrumbItems = [
-        {
-            title: 'Home',
-        },
-        {
-            title: <a href="/">Application Center</a>,
-        },
-        {
-            title: <a href="/">Application List</a>,
-        },
-        {
-            title: 'An Application',
-        },
-    ];
+    // Breadcrumbs
+    let currentLink = '';
+    const location = useLocation();
+    const breadcrumbItems = location.pathname
+        .split('/')
+        .filter((crumb) => crumb !== '')
+        .map((crumb) => {
+            currentLink += `/${crumb}`;
+            return {
+                title: <Link to={currentLink}>{crumb.toUpperCase()}</Link>,
+            };
+        });
+    breadcrumbItems.unshift({ title: <Link to="/">HOME</Link> });
 
     const siteLayoutStyle = { marginLeft: marginLeft };
 

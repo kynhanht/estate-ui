@@ -12,21 +12,20 @@ import {
 
 const service = new BuildingService();
 
-export const createBuilding = (building, navigate) => async (dispatch) => {
+export const getBuilding = (id) => async (dispatch) => {
     try {
-        console.log('Create building');
+        console.log('Get building');
         dispatch({ type: COMMON_LOADING_SET, payload: true });
-        const respone = await service.createBuilding(building);
-        if (respone.status === 201) {
+        const respone = await service.getBuilding(id);
+        if (respone.status === 200) {
             dispatch({ type: BUILDING_SET, payload: respone.data });
-            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Building is saved' });
-            navigate('/buildings/list');
         } else {
-            dispatch({ type: COMMON_ERROR_SET, payload: respone.message });
+            console.error(respone.message);
+            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
         console.error(error.response.data ? error.response.data.messages : error.message);
-        dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
+        dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
     } finally {
         dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
@@ -40,7 +39,8 @@ export const searchBuildings = (buildingSearchRequest) => async (dispatch) => {
         if (respone.status === 200) {
             dispatch({ type: BUILDING_SEARCH, payload: respone.data });
         } else {
-            dispatch({ type: COMMON_ERROR_SET, payload: respone.message });
+            console.error(respone.message);
+            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
         console.error(error.response.data ? error.response.data.messages : error.message);
@@ -51,14 +51,18 @@ export const searchBuildings = (buildingSearchRequest) => async (dispatch) => {
 
 export const getBuildingTypes = () => async (dispatch) => {
     try {
-        dispatch({ type: COMMON_LOADING_SET, payload: true });
         console.log('Get BuildingTypes');
+        dispatch({ type: COMMON_LOADING_SET, payload: true });
         const respone = await service.getBuildingTypes();
         if (respone.status === 200) {
             dispatch({ type: BUILDING_TYPES, payload: respone.data });
+        } else {
+            console.error(respone.message);
+            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
         console.error(error.response.data ? error.response.data.messages : error.message);
+        dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
     } finally {
         dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
@@ -66,19 +70,111 @@ export const getBuildingTypes = () => async (dispatch) => {
 
 export const getBuildingDistricts = () => async (dispatch) => {
     try {
-        dispatch({ type: COMMON_LOADING_SET, payload: true });
         console.log('Get Building Districts');
+        dispatch({ type: COMMON_LOADING_SET, payload: true });
         const respone = await service.getBuildingDistricts();
         if (respone.status === 200) {
             dispatch({ type: BUILDING_DISTRICTS, payload: respone.data });
+        } else {
+            console.error(respone.message);
+            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
         console.error(error.response.data ? error.response.data.messages : error.message);
+        dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
     } finally {
         dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
 };
 
+export const createBuilding = (building, navigate) => async (dispatch) => {
+    try {
+        console.log('Create building');
+        dispatch({ type: COMMON_LOADING_SET, payload: true });
+        const respone = await service.createBuilding(building);
+        if (respone.status === 201) {
+            dispatch({ type: BUILDING_SET, payload: respone.data });
+            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Building is saved' });
+            navigate('/buildings/list');
+        } else {
+            console.error(respone.message);
+            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+        }
+    } catch (error) {
+        console.error(error.response.data ? error.response.data.messages : error.message);
+        dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+    } finally {
+        dispatch({ type: COMMON_LOADING_SET, payload: false });
+    }
+};
+
+export const updateBuilding = (id, building, navigate) => async (dispatch) => {
+    try {
+        console.log('Update building');
+        dispatch({ type: COMMON_LOADING_SET, payload: true });
+        const respone = await service.updateBuilding(id, building);
+        if (respone.status === 200) {
+            dispatch({ type: BUILDING_SET, payload: respone.data });
+            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Building is updated' });
+            navigate('/buildings/list');
+        } else {
+            console.error(respone.message);
+            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+        }
+    } catch (error) {
+        console.error(error.response.data ? error.response.data.messages : error.message);
+        dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+    } finally {
+        dispatch({ type: COMMON_LOADING_SET, payload: false });
+    }
+};
+
+export const deleteBuildings = (ids) => async (dispatch) => {
+    try {
+        console.log('delete buildings');
+        dispatch({ type: COMMON_LOADING_SET, payload: true });
+        const respone = await service.deleteBuildings(ids);
+        if (respone.status === 200) {
+            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Buildings is deleted' });
+        } else {
+            console.error(respone.message);
+            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+        }
+    } catch (error) {
+        console.error(error.response.data ? error.response.data.messages : error.message);
+        dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+    } finally {
+        dispatch({ type: COMMON_LOADING_SET, payload: false });
+    }
+};
+
+export const assignBuilding =
+    ({ staffIds, buildingId }) =>
+    async (dispatch) => {
+        try {
+            console.log('Assign building');
+            dispatch({ type: COMMON_LOADING_SET, payload: true });
+            const respone = await service.assignBuilding({ staffIds, buildingId });
+            if (respone.status === 200) {
+                dispatch({ type: COMMON_MESSAGE_SET, payload: 'Building is saved' });
+            } else {
+                console.error(respone.message);
+                dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+            }
+        } catch (error) {
+            console.error(error.response.data ? error.response.data.messages : error.message);
+            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+        } finally {
+            dispatch({ type: COMMON_LOADING_SET, payload: false });
+        }
+    };
+
 export const clearBuildingState = () => (dispatch) => {
+    console.log('Clear Building State');
     dispatch({ type: BUILDING_STATE_CLEAR });
+};
+
+export const clearBuilding = () => (dispatch) => {
+    console.log('Clear Building');
+    dispatch({ type: BUILDING_SET, payload: {} });
 };
