@@ -19,11 +19,31 @@ export default class BuildingService {
     };
 
     createBuilding = async (building) => {
-        return await axios.post(API_BUILIDNG, building);
+        const formData = new FormData();
+        for (var key in building) {
+            if (building[key]) {
+                if (key === 'image' && building[key][0]?.originFileObj) {
+                    formData.append(key, building[key][0].originFileObj);
+                } else {
+                    formData.append(key, building[key]);
+                }
+            }
+        }
+        return await axios.post(API_BUILIDNG, formData);
     };
 
     updateBuilding = async (id, building) => {
-        return await axios.put(`${API_BUILIDNG}/${id}`, building);
+        const formData = new FormData();
+        for (var key in building) {
+            if (building[key]) {
+                if (key === 'image' && building[key][0]?.originFileObj) {
+                    formData.append(key, building[key][0].originFileObj);
+                } else {
+                    formData.append(key, building[key]);
+                }
+            }
+        }
+        return await axios.put(`${API_BUILIDNG}/${id}`, formData);
     };
 
     deleteBuildings = async (ids) => {
@@ -32,5 +52,9 @@ export default class BuildingService {
 
     assignBuilding = async ({ staffIds, buildingId }) => {
         return await axios.post(`${API_BUILIDNG}/assignment`, { staffIds, buildingId });
+    };
+
+    static getBuildingImageUrl = (filename) => {
+        return API_BUILIDNG + `/image/${filename}`;
     };
 }

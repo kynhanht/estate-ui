@@ -24,7 +24,8 @@ export const getBuilding = (id) => async (dispatch) => {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        console.error(error.response.data ? error.response.data.messages : error.message);
+        // console.error(error.response.data ? error.response.data.messages : error.message);
+        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
     } finally {
         dispatch({ type: COMMON_LOADING_SET, payload: false });
@@ -43,7 +44,7 @@ export const searchBuildings = (buildingSearchRequest) => async (dispatch) => {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        console.error(error.response.data ? error.response.data.messages : error.message);
+        console.error(error);
     } finally {
         dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
@@ -61,7 +62,7 @@ export const getBuildingTypes = () => async (dispatch) => {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        console.error(error.response.data ? error.response.data.messages : error.message);
+        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
     } finally {
         dispatch({ type: COMMON_LOADING_SET, payload: false });
@@ -80,7 +81,7 @@ export const getBuildingDistricts = () => async (dispatch) => {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        console.error(error.response.data ? error.response.data.messages : error.message);
+        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
     } finally {
         dispatch({ type: COMMON_LOADING_SET, payload: false });
@@ -95,13 +96,13 @@ export const createBuilding = (building, navigate) => async (dispatch) => {
         if (respone.status === 201) {
             dispatch({ type: BUILDING_SET, payload: respone.data });
             dispatch({ type: COMMON_MESSAGE_SET, payload: 'Building is saved' });
-            navigate('/buildings/list');
+            navigate('/buildings');
         } else {
             console.error(respone.message);
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        console.error(error.response.data ? error.response.data.messages : error.message);
+        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
     } finally {
         dispatch({ type: COMMON_LOADING_SET, payload: false });
@@ -116,13 +117,13 @@ export const updateBuilding = (id, building, navigate) => async (dispatch) => {
         if (respone.status === 200) {
             dispatch({ type: BUILDING_SET, payload: respone.data });
             dispatch({ type: COMMON_MESSAGE_SET, payload: 'Building is updated' });
-            navigate('/buildings/list');
+            navigate('/buildings');
         } else {
             console.error(respone.message);
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        console.error(error.response.data ? error.response.data.messages : error.message);
+        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
     } finally {
         dispatch({ type: COMMON_LOADING_SET, payload: false });
@@ -141,7 +142,7 @@ export const deleteBuildings = (ids) => async (dispatch) => {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        console.error(error.response.data ? error.response.data.messages : error.message);
+        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
     } finally {
         dispatch({ type: COMMON_LOADING_SET, payload: false });
@@ -162,7 +163,7 @@ export const assignBuilding =
                 dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
             }
         } catch (error) {
-            console.error(error.response.data ? error.response.data.messages : error.message);
+            console.error(error);
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         } finally {
             dispatch({ type: COMMON_LOADING_SET, payload: false });

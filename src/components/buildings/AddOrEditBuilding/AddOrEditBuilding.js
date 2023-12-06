@@ -2,7 +2,19 @@ import { Component, createRef } from 'react';
 import classNames from 'classnames/bind';
 import styles from './AddOrEditBuilding.module.scss';
 import withRouter from '~/helpers/withRouter';
-import { Button, Checkbox, DatePicker, Divider, Form, Input, InputNumber, Popconfirm, Select, Upload } from 'antd';
+import {
+    Button,
+    Checkbox,
+    DatePicker,
+    Divider,
+    Form,
+    Image,
+    Input,
+    InputNumber,
+    Popconfirm,
+    Select,
+    Upload,
+} from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import ContentPageHeader from '~/components/common/ContentPageHeader';
 import { connect } from 'react-redux';
@@ -16,22 +28,9 @@ import {
     getBuildingTypes,
     clearBuilding,
 } from '~/redux/actions/buildingAction';
+import BuildingService from '~/services/buildingService';
 
 const cx = classNames.bind(styles);
-
-const dummyRequest = ({ file, onSuccess }) => {
-    setTimeout(() => {
-        onSuccess('ok');
-    }, 0);
-};
-
-const normFile = (e) => {
-    console.log('Upload event:', e);
-    if (Array.isArray(e)) {
-        return e;
-    }
-    return e?.fileList;
-};
 
 const dateFormat = 'DD/MM/YYYY';
 
@@ -40,9 +39,23 @@ class AddOrEditBuilding extends Component {
         super(props);
         this.state = {
             building: {},
+            isPreviewable: false,
+            previewImage: '',
         };
         this.formRef = createRef();
     }
+
+    handlePreviewImage = (file) => {
+        console.log(file);
+        if (file.thumbUrl) {
+            this.setState({ isPreviewable: true, previewImage: file.thumbUrl });
+        }
+    };
+
+    handleRemoveImage = (file) => {
+        console.log(file);
+        this.setState({ isPreviewable: false, previewImage: '' });
+    };
 
     confirmUpdate = () => {
         this.formRef.current.submit();
@@ -92,11 +105,20 @@ class AddOrEditBuilding extends Component {
         this.props.clearBuilding();
     };
 
+    normFile = (e) => {
+        console.log('Upload event:', e);
+        if (Array.isArray(e)) {
+            return e;
+        }
+        return e?.fileList;
+    };
+
     render() {
         console.log('Rendering');
         const { navigate } = this.props.router;
         const { isLoading } = this.props;
         const { building } = this.state;
+        console.log(building);
         const buildingTypes = this.props.buildingTypes
             ? Object.entries(this.props.buildingTypes).map(([key, value]) => ({ value: key, label: value }))
             : [];
@@ -212,7 +234,7 @@ class AddOrEditBuilding extends Component {
                     <Form.Item label="Car Fee" name="carFee" initialValue={building.carFee}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Motobike Fee" name="motobikeFee" initialValue={building.motobikeFee}>
+                    <Form.Item label="Motorbike Fee" name="motorbikeFee" initialValue={building.motorbikeFee}>
                         <Input />
                     </Form.Item>
                     <Form.Item label="Overtime Fee" name="overtimeFee" initialValue={building.overtimeFee}>
@@ -253,7 +275,7 @@ class AddOrEditBuilding extends Component {
                     <Form.Item label="Brokerage Fee" name="brokerageFee" initialValue={building.brokerageFee}>
                         <Input />
                     </Form.Item>
-                    <Form.Item name="buildingTypes" label="Building Types" initialValue={building.buildingTypes}>
+                    <Form.Item name="buildingTypes" label="Building Types" initialValue={building.buildingTypes || []}>
                         <Checkbox.Group options={buildingTypes} />
                     </Form.Item>
                     <Form.Item label="Note" name="note" initialValue={building.note}>
@@ -269,13 +291,34 @@ class AddOrEditBuilding extends Component {
                         name="image"
                         label="Image"
                         valuePropName="fileList"
-                        getValueFromEvent={normFile}
+                        getValueFromEvent={this.normFile}
                         extra="Choose your image"
+                        initialValue={[
+                            {
+                                thumbUrl: building.imageName
+                                    ? BuildingService.getBuildingImageUrl(building.imageName)
+                                    : '',
+                            },
+                        ]}
                     >
-                        <Upload listType="picture" maxCount={1} customRequest={dummyRequest}>
+                        <Upload
+                            listType="picture"
+                            maxCount={1}
+                            beforeUpload={() => false}
+                            accept=".jpg,.png,.gif"
+                            onPreview={this.handlePreviewImage}
+                            onRemove={this.handleRemoveImage}
+                        >
                             <Button icon={<UploadOutlined />}>Click to upload</Button>
                         </Upload>
                     </Form.Item>
+
+                    {this.state.isPreviewable && (
+                        <>
+                            <Divider />
+                            <Image src={this.state.previewImage} style={{ width: 200 }} />
+                        </>
+                    )}
                     <Divider />
                     {building.id ? (
                         <Popconfirm

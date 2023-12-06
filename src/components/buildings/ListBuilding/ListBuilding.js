@@ -21,6 +21,7 @@ import {
     Checkbox,
     Modal,
     Skeleton,
+    Image,
 } from 'antd';
 import {
     EditOutlined,
@@ -47,6 +48,7 @@ import {
 } from '~/redux/actions/buildingAction';
 import { getStaffs, getStaffsByBuildingId, clearUserState } from '~/redux/actions/userAction';
 import { setLoading } from '~/redux/actions/commonAction';
+import BuildingService from '~/services/buildingService';
 
 const cx = classNames.bind(styles);
 const tableHeaders = [
@@ -64,6 +66,20 @@ class ListBuilding extends Component {
     constructor(props) {
         super(props);
         this.columns = [
+            {
+                title: 'Image',
+                key: 'imageName',
+                dataIndex: 'imageName',
+                width: 90,
+                align: 'center',
+                render: (_, record) => {
+                    return (
+                        <Space size="middle">
+                            <Image width="100%" src={BuildingService.getBuildingImageUrl(record.imageName)} />
+                        </Space>
+                    );
+                },
+            },
             {
                 title: 'Building Name',
                 key: 'buildingName',
@@ -517,7 +533,6 @@ class ListBuilding extends Component {
                                 defaultPageSize: pageSize,
                                 current: page,
                                 total: totalItems,
-
                                 onChange: (page, pageSize) => {
                                     const { buildingCriterias } = this.state;
                                     this.props.searchBuildings({ page, pageSize, ...buildingCriterias });
