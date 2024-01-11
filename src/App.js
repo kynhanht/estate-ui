@@ -18,7 +18,7 @@ function App() {
                                     path={route.path}
                                     element={
                                         <Dashboard>
-                                            <Page />
+                                            <Page key={route.key} />
                                         </Dashboard>
                                     }
                                 />

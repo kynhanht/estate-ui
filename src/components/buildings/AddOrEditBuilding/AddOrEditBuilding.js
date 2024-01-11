@@ -20,55 +20,64 @@ import ContentPageHeader from '~/components/common/ContentPageHeader';
 import { connect } from 'react-redux';
 import dayjs from 'dayjs';
 
-import {
-    createBuilding,
-    updateBuilding,
-    getBuilding,
-    getBuildingDistricts,
-    getBuildingTypes,
-    clearBuilding,
-} from '~/redux/actions/buildingAction';
+import { createBuilding, updateBuilding, getBuildingById, clearBuilding } from '~/redux/actions/buildingAction';
 import BuildingService from '~/services/buildingService';
+
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const cx = classNames.bind(styles);
 
-const dateFormat = 'DD/MM/YYYY';
+const dateFormat = 'YYYY-MM-DD';
 
 class AddOrEditBuilding extends Component {
     constructor(props) {
         super(props);
         this.state = {
             building: {},
+            buildingDistricts: [],
+            buildingTypes: [],
             isPreviewable: false,
             previewImage: '',
         };
         this.formRef = createRef();
     }
 
+    // Upload Image
+    normImageFile = (e) => {
+        console.log('Upload event:', e);
+        if (Array.isArray(e)) {
+            return e;
+        }
+        return e?.fileList;
+    };
+
     handlePreviewImage = (file) => {
         console.log(file);
-        if (file.thumbUrl) {
-            this.setState({ isPreviewable: true, previewImage: file.thumbUrl });
+        if (file.url) {
+            this.setState({ isPreviewable: true, previewImage: file.url });
         }
     };
 
     handleRemoveImage = (file) => {
-        console.log(file);
         this.setState({ isPreviewable: false, previewImage: '' });
     };
 
+    // Handle Form
     confirmUpdate = () => {
         this.formRef.current.submit();
     };
-    onSubmitForm = (values) => {
+    handleSubmitForm = (values) => {
         const { navigate } = this.props.router;
         const { id } = this.state.building;
         const newValues = {
             ...values,
             rentTime: values.rentTime?.format(dateFormat),
             decorationTime: values.decorationTime?.format(dateFormat),
+            imageName: values.imageFile[0] ? values.imageFile[0].uid : null,
+            imageFile: values.imageFile[0]?.originFileObj ? values.imageFile[0].originFileObj : null,
         };
-
+        console.log(values, newValues);
         if (id) {
             this.props.updateBuilding(id, newValues, navigate);
         } else {
@@ -77,18 +86,31 @@ class AddOrEditBuilding extends Component {
     };
 
     componentDidMount = () => {
-        this.props.getBuildingDistricts();
-        this.props.getBuildingTypes();
+        this.loadData();
         const { id } = this.props.router.params;
         if (id) {
-            this.props.getBuilding(id);
+            this.props.getBuildingById(id);
         } else {
             this.props.clearBuilding();
         }
     };
 
-    onChange = (date, dateString) => {
-        console.log(date, dateString);
+    loadData = async () => {
+        const buildingService = new BuildingService();
+        const buildingDistrictsResponse = await buildingService.getBuildingDistricts();
+        const buildingDistricts = buildingDistrictsResponse.data
+            ? Object.entries(buildingDistrictsResponse.data).map(([key, value]) => ({ value: key, label: value }))
+            : [];
+
+        const buildingTypesResponse = await buildingService.getBuildingTypes();
+        const buildingTypes = buildingTypesResponse.data
+            ? Object.entries(buildingTypesResponse.data).map(([key, value]) => ({ value: key, label: value }))
+            : [];
+        this.setState({
+            ...this.state,
+            buildingDistricts,
+            buildingTypes,
+        });
     };
 
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -105,32 +127,25 @@ class AddOrEditBuilding extends Component {
         this.props.clearBuilding();
     };
 
-    normFile = (e) => {
-        console.log('Upload event:', e);
-        if (Array.isArray(e)) {
-            return e;
-        }
-        return e?.fileList;
-    };
-
     render() {
         console.log('Rendering');
         const { navigate } = this.props.router;
         const { isLoading } = this.props;
-        const { building } = this.state;
-        console.log(building);
-        const buildingTypes = this.props.buildingTypes
-            ? Object.entries(this.props.buildingTypes).map(([key, value]) => ({ value: key, label: value }))
-            : [];
+        const { building, buildingDistricts, buildingTypes } = this.state;
 
-        const buildingDistricts = this.props.buildingDistricts
-            ? Object.entries(this.props.buildingDistricts).map(([key, value]) => ({ value: key, label: value }))
-            : [];
+        let initialImage = null;
+        if (building.imageName) {
+            initialImage = {
+                url: BuildingService.getBuildingImageUrl(building.imageName),
+                uid: building.imageName,
+            };
+        }
 
         let title = 'Add New Building';
         if (building.id) {
             title = 'Update Building';
         }
+
         return (
             <div>
                 <ContentPageHeader navigate={navigate} title={title} className={cx('')} />
@@ -139,7 +154,7 @@ class AddOrEditBuilding extends Component {
                     wrapperCol={{ span: 18 }}
                     layout="horizontal"
                     labelAlign="left"
-                    onFinish={this.onSubmitForm}
+                    onFinish={this.handleSubmitForm}
                     key={building.id}
                     ref={this.formRef}
                     disabled={isLoading}
@@ -168,6 +183,7 @@ class AddOrEditBuilding extends Component {
                             }}
                             allowClear
                             options={buildingDistricts}
+                            placeholder="Select District"
                         ></Select>
                     </Form.Item>
                     <Form.Item label="Ward" name="ward" initialValue={building.ward}>
@@ -212,10 +228,18 @@ class AddOrEditBuilding extends Component {
                     >
                         <Input.TextArea />
                     </Form.Item>
-                    <Form.Item label="Rent Price" name="rentPrice" initialValue={building.rentPrice}>
+                    <Form.Item
+                        label="Rent Price"
+                        name="rentPrice"
+                        initialValue={building.rentPrice}
+                        rules={[{ required: true, message: 'Please input Rent Price!' }]}
+                        hasFeedback
+                    >
                         <InputNumber
                             min={0}
                             addonAfter={'$'}
+                            formatter={(value) => value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                            parser={(value) => value.replace(/$\s?|(,*)/g, '')}
                             style={{
                                 width: 120,
                             }}
@@ -257,14 +281,14 @@ class AddOrEditBuilding extends Component {
                         name="rentTime"
                         initialValue={building.rentTime ? dayjs(building.rentTime, dateFormat) : null}
                     >
-                        <DatePicker format={dateFormat} />
+                        <DatePicker format={dateFormat} placeholder="Select Rent Time" />
                     </Form.Item>
                     <Form.Item
                         label="Decoration Time"
                         name="decorationTime"
                         initialValue={building.decorationTime ? dayjs(building.decorationTime, dateFormat) : null}
                     >
-                        <DatePicker format={dateFormat} />
+                        <DatePicker format={dateFormat} placeholder="Select Decoration Time" />
                     </Form.Item>
                     <Form.Item label="Manager Name" name="managerName" initialValue={building.managerName}>
                         <Input />
@@ -279,7 +303,7 @@ class AddOrEditBuilding extends Component {
                         <Checkbox.Group options={buildingTypes} />
                     </Form.Item>
                     <Form.Item label="Note" name="note" initialValue={building.note}>
-                        <Input.TextArea />
+                        <ReactQuill theme="snow" />
                     </Form.Item>
                     <Form.Item label="Building Link" name="linkOfBuilding" initialValue={building.linkOfBuilding}>
                         <Input />
@@ -288,18 +312,12 @@ class AddOrEditBuilding extends Component {
                         <Input />
                     </Form.Item>
                     <Form.Item
-                        name="image"
+                        name="imageFile"
                         label="Image"
                         valuePropName="fileList"
-                        getValueFromEvent={this.normFile}
+                        getValueFromEvent={this.normImageFile}
                         extra="Choose your image"
-                        initialValue={[
-                            {
-                                thumbUrl: building.imageName
-                                    ? BuildingService.getBuildingImageUrl(building.imageName)
-                                    : '',
-                            },
-                        ]}
+                        initialValue={initialImage ? [initialImage] : []}
                     >
                         <Upload
                             listType="picture"
@@ -308,6 +326,7 @@ class AddOrEditBuilding extends Component {
                             accept=".jpg,.png,.gif"
                             onPreview={this.handlePreviewImage}
                             onRemove={this.handleRemoveImage}
+                            multiple={true}
                         >
                             <Button icon={<UploadOutlined />}>Click to upload</Button>
                         </Upload>
@@ -344,15 +363,11 @@ class AddOrEditBuilding extends Component {
 
 const mapStateToProps = (state) => ({
     building: state.buildingReducer.building,
-    buildingDistricts: state.buildingReducer.buildingDistricts,
-    buildingTypes: state.buildingReducer.buildingTypes,
     isLoading: state.commonReducer.isLoading,
 });
 
 const mapDispatchToProps = {
-    getBuilding,
-    getBuildingDistricts,
-    getBuildingTypes,
+    getBuildingById,
     createBuilding,
     updateBuilding,
     clearBuilding,

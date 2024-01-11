@@ -1,21 +1,30 @@
-import { STAFFS_BY_BUILDING_ID, STAFFS_SET, USER_SET, USER_STATE_CLEAR } from '../actions/actionTypes';
+import { USER_SET, USERS_SET, USER_PAGEABLE, USER_STATE_CLEAR } from '../actions/actionTypes';
 
 const initialState = {
     user: {},
-    staffs: [],
-    staffsByBuildingId: [],
+    users: [],
+    pagination: {
+        page: 1,
+        size: 4,
+        totalElements: 0,
+        totalPages: 1,
+    },
 };
 
 const userReducer = (state = initialState, { type, payload }) => {
     switch (type) {
         case USER_SET:
             return { ...state, user: payload };
-        case STAFFS_SET:
-            return { ...state, staffs: payload };
-        case STAFFS_BY_BUILDING_ID:
-            return { ...state, staffsByBuildingId: payload };
+        case USERS_SET:
+            return { ...state, users: payload };
+        case USER_PAGEABLE:
+            return { ...state, pagination: payload };
         case USER_STATE_CLEAR:
-            return { user: {}, staffs: [], staffsByBuildingId: [] };
+            return {
+                user: {},
+                users: [],
+                pagination: {},
+            };
         default:
             return state;
     }

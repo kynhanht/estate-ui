@@ -8,16 +8,16 @@ import AddOrEditCustomer from '~/components/customers/AddOrEditCustomer';
 import config from '~/config';
 
 const publicRoutes = [
-    { path: config.routes.home, component: Home },
-    { path: config.routes.listUser, component: ListUser },
-    { path: config.routes.addUser, component: AddOrEditUser },
-    { path: config.routes.editUser, component: AddOrEditUser },
-    { path: config.routes.listBuilding, component: ListBuilding },
-    { path: config.routes.addBuilding, component: AddOrEditBuilding },
-    { path: config.routes.editBuilding, component: AddOrEditBuilding },
-    { path: config.routes.listCustomer, component: ListCustomer },
-    { path: config.routes.addCustomer, component: AddOrEditCustomer },
-    { path: config.routes.editCustomer, component: AddOrEditCustomer },
+    { path: config.routes.home, component: Home, key: 'home' },
+    { path: config.routes.listUser, component: ListUser, key: 'listUser' },
+    { path: config.routes.addUser, component: AddOrEditUser, key: 'addUser' },
+    { path: config.routes.editUser, component: AddOrEditUser, key: 'editUser' },
+    { path: config.routes.listBuilding, component: ListBuilding, key: 'listBuilding' },
+    { path: config.routes.addBuilding, component: AddOrEditBuilding, key: 'addBuilding' },
+    { path: config.routes.editBuilding, component: AddOrEditBuilding, key: 'editBuilding' },
+    { path: config.routes.listCustomer, component: ListCustomer, key: 'listCustomer' },
+    { path: config.routes.addCustomer, component: AddOrEditCustomer, key: 'addCustomer' },
+    { path: config.routes.editCustomer, component: AddOrEditCustomer, key: 'editCustomer' },
 ];
 
 const privateRoutes = [];

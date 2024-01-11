@@ -1,28 +1,27 @@
-import BuildingService from '~/services/buildingService';
 import {
-    BUILDINGS_SET,
-    BUILDING_PAGEABLE,
-    BUILDING_SET,
-    BUILDING_STATE_CLEAR,
+    CUSTOMER_SET,
+    CUSTOMERS_SET,
+    CUSTOMER_PAGEABLE,
+    CUSTOMER_STATE_CLEAR,
     COMMON_ERROR_SET,
     COMMON_LOADING_SET,
     COMMON_MESSAGE_SET,
 } from './actionTypes';
+import CustomerService from '~/services/customerService';
 
-const service = new BuildingService();
+const service = new CustomerService();
 
-export const getBuildingById = (id) => async (dispatch) => {
+export const getCustomerById = (id) => async (dispatch) => {
     try {
-        console.log('Get building');
+        console.log('Get customer');
         dispatch({ type: COMMON_LOADING_SET, payload: true });
-        const respone = await service.getBuildingById(id);
+        const respone = await service.getCustomerById(id);
         if (respone.status === 200) {
-            dispatch({ type: BUILDING_SET, payload: respone.data });
+            dispatch({ type: CUSTOMER_SET, payload: respone.data });
         } else {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        // console.error(error.response.data ? error.response.data.messages : error.message);
         console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
     } finally {
@@ -30,13 +29,13 @@ export const getBuildingById = (id) => async (dispatch) => {
     }
 };
 
-export const searchBuildings = (buildingSearchRequest, params) => async (dispatch) => {
+export const searchCustomers = (customerSearchRequest, params) => async (dispatch) => {
     try {
-        console.log('Search buildings');
+        console.log('Search customers');
         dispatch({ type: COMMON_LOADING_SET, payload: true });
-        const respone = await service.searchBuildings(buildingSearchRequest, params);
+        const respone = await service.searchCustomers(customerSearchRequest, params);
         if (respone.status === 200) {
-            dispatch({ type: BUILDINGS_SET, payload: respone.data.content });
+            dispatch({ type: CUSTOMERS_SET, payload: respone.data.content });
             const { size, totalPages, totalElements, pageable } = respone.data;
             const pagination = {
                 page: pageable.pageNumber + 1,
@@ -44,7 +43,7 @@ export const searchBuildings = (buildingSearchRequest, params) => async (dispatc
                 totalPages: totalPages,
                 totalElements: totalElements,
             };
-            dispatch({ type: BUILDING_PAGEABLE, payload: pagination });
+            dispatch({ type: CUSTOMER_PAGEABLE, payload: pagination });
         } else {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
@@ -56,15 +55,15 @@ export const searchBuildings = (buildingSearchRequest, params) => async (dispatc
     }
 };
 
-export const createBuilding = (building, navigate) => async (dispatch) => {
+export const createCustomer = (customer, navigate) => async (dispatch) => {
     try {
-        console.log('Create building');
+        console.log('Create customer');
         dispatch({ type: COMMON_LOADING_SET, payload: true });
-        const respone = await service.createBuilding(building);
+        const respone = await service.createCustomer(customer);
         if (respone.status === 201) {
-            dispatch({ type: BUILDING_SET, payload: respone.data });
-            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Building is saved' });
-            navigate('/buildings');
+            dispatch({ type: CUSTOMER_SET, payload: respone.data });
+            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Customer is saved' });
+            navigate('/customers');
         } else {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
@@ -76,15 +75,15 @@ export const createBuilding = (building, navigate) => async (dispatch) => {
     }
 };
 
-export const updateBuilding = (id, building, navigate) => async (dispatch) => {
+export const updateCustomer = (id, customer, navigate) => async (dispatch) => {
     try {
-        console.log('Update building');
+        console.log('Update customer');
         dispatch({ type: COMMON_LOADING_SET, payload: true });
-        const respone = await service.updateBuilding(id, building);
+        const respone = await service.updateCustomer(id, customer);
         if (respone.status === 200) {
-            dispatch({ type: BUILDING_SET, payload: respone.data });
-            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Building is updated' });
-            navigate('/buildings');
+            dispatch({ type: CUSTOMER_SET, payload: respone.data });
+            dispatch({ type: COMMON_MESSAGE_SET, payload: 'customer is updated' });
+            navigate('/customers');
         } else {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
@@ -96,13 +95,13 @@ export const updateBuilding = (id, building, navigate) => async (dispatch) => {
     }
 };
 
-export const deleteBuildings = (ids) => async (dispatch) => {
+export const deleteCustomers = (ids) => async (dispatch) => {
     try {
-        console.log('delete buildings');
+        console.log('delete customers');
         dispatch({ type: COMMON_LOADING_SET, payload: true });
-        const respone = await service.deleteBuildings(ids);
+        const respone = await service.deleteCustomers(ids);
         if (respone.status === 200) {
-            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Buildings is deleted' });
+            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Customers is deleted' });
         } else {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
@@ -114,15 +113,15 @@ export const deleteBuildings = (ids) => async (dispatch) => {
     }
 };
 
-export const assignBuilding =
-    ({ staffIds, buildingId }) =>
+export const assignCustomer =
+    ({ staffIds, customerId }) =>
     async (dispatch) => {
         try {
-            console.log('Assign building');
+            console.log('Assign customer');
             dispatch({ type: COMMON_LOADING_SET, payload: true });
-            const respone = await service.assignBuilding({ staffIds, buildingId });
+            const respone = await service.assignCustomer({ staffIds, customerId });
             if (respone.status === 200) {
-                dispatch({ type: COMMON_MESSAGE_SET, payload: 'Building is saved' });
+                dispatch({ type: COMMON_MESSAGE_SET, payload: 'Customer is saved' });
             } else {
                 dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
             }
@@ -134,12 +133,12 @@ export const assignBuilding =
         }
     };
 
-export const clearBuildingState = () => (dispatch) => {
-    console.log('Clear Building State');
-    dispatch({ type: BUILDING_STATE_CLEAR });
+export const clearCustomerState = () => (dispatch) => {
+    console.log('Clear customer state');
+    dispatch({ type: CUSTOMER_STATE_CLEAR });
 };
 
-export const clearBuilding = () => (dispatch) => {
-    console.log('Clear Building');
-    dispatch({ type: BUILDING_SET, payload: {} });
+export const clearCustomer = () => (dispatch) => {
+    console.log('Clear customer');
+    dispatch({ type: CUSTOMER_SET, payload: {} });
 };

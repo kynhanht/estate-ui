@@ -1,18 +1,14 @@
-import {
-    BUILDING_SET,
-    BUILDING_STATE_CLEAR,
-    BUILDING_SEARCH,
-    BUILDINGS_SET,
-    BUILDING_TYPES,
-    BUILDING_DISTRICTS,
-} from '~/redux/actions/actionTypes';
+import { BUILDING_SET, BUILDING_STATE_CLEAR, BUILDINGS_SET, BUILDING_PAGEABLE } from '~/redux/actions/actionTypes';
 
 const initialState = {
     building: {},
     buildings: [],
-    buildingSearch: {},
-    buildingTypes: [],
-    buildingDistricts: [],
+    pagination: {
+        page: 1,
+        size: 4,
+        totalElements: 0,
+        totalPages: 1,
+    },
 };
 
 const buildingReducer = (state = initialState, { type, payload }) => {
@@ -21,14 +17,14 @@ const buildingReducer = (state = initialState, { type, payload }) => {
             return { ...state, building: payload };
         case BUILDINGS_SET:
             return { ...state, buildings: payload };
-        case BUILDING_SEARCH:
-            return { ...state, buildingSearch: payload };
-        case BUILDING_TYPES:
-            return { ...state, buildingTypes: payload };
-        case BUILDING_DISTRICTS:
-            return { ...state, buildingDistricts: payload };
+        case BUILDING_PAGEABLE:
+            return { ...state, pagination: payload };
         case BUILDING_STATE_CLEAR:
-            return { building: {}, buildings: [], buildingSearch: {}, buildingTypes: [], buildingDistricts: [] };
+            return {
+                building: {},
+                buildings: [],
+                pagination: {},
+            };
         default:
             return state;
     }

@@ -2,8 +2,10 @@ import axios from 'axios';
 import { API_BUILIDNG } from './constant';
 
 export default class BuildingService {
-    searchBuildings = async (buildingSearchRequest) => {
-        return await axios.post(`${API_BUILIDNG}/search`, buildingSearchRequest);
+    searchBuildings = async (buildingSearchRequest, params) => {
+        return await axios.post(`${API_BUILIDNG}/search`, buildingSearchRequest, {
+            params: params,
+        });
     };
 
     getBuildingDistricts = async () => {
@@ -14,7 +16,7 @@ export default class BuildingService {
         return await axios.get(`${API_BUILIDNG}/types`);
     };
 
-    getBuilding = async (id) => {
+    getBuildingById = async (id) => {
         return await axios.get(`${API_BUILIDNG}/${id}`);
     };
 
@@ -22,11 +24,7 @@ export default class BuildingService {
         const formData = new FormData();
         for (var key in building) {
             if (building[key]) {
-                if (key === 'image' && building[key][0]?.originFileObj) {
-                    formData.append(key, building[key][0].originFileObj);
-                } else {
-                    formData.append(key, building[key]);
-                }
+                formData.append(key, building[key]);
             }
         }
         return await axios.post(API_BUILIDNG, formData);
@@ -36,11 +34,7 @@ export default class BuildingService {
         const formData = new FormData();
         for (var key in building) {
             if (building[key]) {
-                if (key === 'image' && building[key][0]?.originFileObj) {
-                    formData.append(key, building[key][0].originFileObj);
-                } else {
-                    formData.append(key, building[key]);
-                }
+                formData.append(key, building[key]);
             }
         }
         return await axios.put(`${API_BUILIDNG}/${id}`, formData);
@@ -51,7 +45,7 @@ export default class BuildingService {
     };
 
     assignBuilding = async ({ staffIds, buildingId }) => {
-        return await axios.post(`${API_BUILIDNG}/assignment`, { staffIds, buildingId });
+        return await axios.post(`${API_BUILIDNG}/assignment-building`, { staffIds, buildingId });
     };
 
     static getBuildingImageUrl = (filename) => {
