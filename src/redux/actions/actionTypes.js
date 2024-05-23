@@ -1,3 +1,8 @@
+// Auth
+
+export const LOGIN_SET = 'LOGIN_SET';
+export const LOGOUT_SET = 'LOGOUT_SET';
+
 // Building
 export const BUILDING_SET = 'BUILDING_SET';
 export const BUILDINGS_SET = 'BUILDINGS_SET';

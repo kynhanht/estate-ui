@@ -23,11 +23,9 @@ export const getBuildingById = (id) => async (dispatch) => {
         }
     } catch (error) {
         // console.error(error.response.data ? error.response.data.messages : error.message);
-        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
-    } finally {
-        dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
+    dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
 
 export const searchBuildings = (buildingSearchRequest, params) => async (dispatch) => {
@@ -49,11 +47,9 @@ export const searchBuildings = (buildingSearchRequest, params) => async (dispatc
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
-    } finally {
-        dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
+    dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
 
 export const createBuilding = (building, navigate) => async (dispatch) => {
@@ -69,11 +65,9 @@ export const createBuilding = (building, navigate) => async (dispatch) => {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
-    } finally {
-        dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
+    dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
 
 export const updateBuilding = (id, building, navigate) => async (dispatch) => {
@@ -89,11 +83,9 @@ export const updateBuilding = (id, building, navigate) => async (dispatch) => {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
-    } finally {
-        dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
+    dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
 
 export const deleteBuildings = (ids) => async (dispatch) => {
@@ -107,11 +99,9 @@ export const deleteBuildings = (ids) => async (dispatch) => {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
-    } finally {
-        dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
+    dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
 
 export const assignBuilding =
@@ -127,11 +117,9 @@ export const assignBuilding =
                 dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
             }
         } catch (error) {
-            console.error(error);
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
-        } finally {
-            dispatch({ type: COMMON_LOADING_SET, payload: false });
         }
+        dispatch({ type: COMMON_LOADING_SET, payload: false });
     };
 
 export const clearBuildingState = () => (dispatch) => {

@@ -22,11 +22,9 @@ export const getCustomerById = (id) => async (dispatch) => {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
-    } finally {
-        dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
+    dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
 
 export const searchCustomers = (customerSearchRequest, params) => async (dispatch) => {
@@ -48,11 +46,9 @@ export const searchCustomers = (customerSearchRequest, params) => async (dispatc
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
-    } finally {
-        dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
+    dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
 
 export const createCustomer = (customer, navigate) => async (dispatch) => {
@@ -68,11 +64,9 @@ export const createCustomer = (customer, navigate) => async (dispatch) => {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
-    } finally {
-        dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
+    dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
 
 export const updateCustomer = (id, customer, navigate) => async (dispatch) => {
@@ -88,11 +82,9 @@ export const updateCustomer = (id, customer, navigate) => async (dispatch) => {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
-    } finally {
-        dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
+    dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
 
 export const deleteCustomers = (ids) => async (dispatch) => {
@@ -106,11 +98,9 @@ export const deleteCustomers = (ids) => async (dispatch) => {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
-    } finally {
-        dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
+    dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
 
 export const assignCustomer =
@@ -126,11 +116,9 @@ export const assignCustomer =
                 dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
             }
         } catch (error) {
-            console.error(error);
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
-        } finally {
-            dispatch({ type: COMMON_LOADING_SET, payload: false });
         }
+        dispatch({ type: COMMON_LOADING_SET, payload: false });
     };
 
 export const clearCustomerState = () => (dispatch) => {

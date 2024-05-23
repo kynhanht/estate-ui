@@ -21,12 +21,10 @@ export const getTransactionsByCustomerId = (customerId) => async (dispatch) => {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        // console.error(error.response.data ? error.response.data.messages : error.message);
         console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
-    } finally {
-        dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
+    dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
 
 export const createTransaction = (transaction, navigate) => async (dispatch) => {
@@ -44,9 +42,8 @@ export const createTransaction = (transaction, navigate) => async (dispatch) => 
     } catch (error) {
         console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
-    } finally {
-        dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
+    dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
 
 export const clearTransactionrState = () => (dispatch) => {

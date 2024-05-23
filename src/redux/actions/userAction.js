@@ -22,12 +22,9 @@ export const getUserById = (id) => async (dispatch) => {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        // console.error(error.response.data ? error.response.data.messages : error.message);
-        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
-    } finally {
-        dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
+    dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
 
 export const searchUsers = (userSearchRequest, params) => async (dispatch) => {
@@ -50,11 +47,9 @@ export const searchUsers = (userSearchRequest, params) => async (dispatch) => {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
-    } finally {
-        dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
+    dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
 
 export const createUser = (user, navigate) => async (dispatch) => {
@@ -70,11 +65,9 @@ export const createUser = (user, navigate) => async (dispatch) => {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
-    } finally {
-        dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
+    dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
 
 export const updateUser = (id, user, navigate) => async (dispatch) => {
@@ -90,11 +83,9 @@ export const updateUser = (id, user, navigate) => async (dispatch) => {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
-    } finally {
-        dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
+    dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
 
 export const deleteUsers = (ids) => async (dispatch) => {
@@ -108,11 +99,9 @@ export const deleteUsers = (ids) => async (dispatch) => {
             dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
         }
     } catch (error) {
-        console.error(error);
         dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
-    } finally {
-        dispatch({ type: COMMON_LOADING_SET, payload: false });
     }
+    dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
 
 export const clearUserState = () => (dispatch) => {

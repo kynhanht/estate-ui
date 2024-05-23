@@ -1,4 +1,5 @@
 const routes = {
+    login: '/login',
     home: '/',
     listUser: '/users',
     addUser: '/users/add',

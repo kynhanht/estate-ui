@@ -1,23 +1,23 @@
-import axios from 'axios';
+import api from '~/helpers/api';
 import { API_BUILIDNG } from './constant';
 
 export default class BuildingService {
     searchBuildings = async (buildingSearchRequest, params) => {
-        return await axios.post(`${API_BUILIDNG}/search`, buildingSearchRequest, {
+        return await api.post(`${API_BUILIDNG}/search`, buildingSearchRequest, {
             params: params,
         });
     };
 
     getBuildingDistricts = async () => {
-        return await axios.get(`${API_BUILIDNG}/districts`);
+        return await api.get(`${API_BUILIDNG}/districts`);
     };
 
     getBuildingTypes = async () => {
-        return await axios.get(`${API_BUILIDNG}/types`);
+        return await api.get(`${API_BUILIDNG}/types`);
     };
 
     getBuildingById = async (id) => {
-        return await axios.get(`${API_BUILIDNG}/${id}`);
+        return await api.get(`${API_BUILIDNG}/${id}`);
     };
 
     createBuilding = async (building) => {
@@ -27,7 +27,7 @@ export default class BuildingService {
                 formData.append(key, building[key]);
             }
         }
-        return await axios.post(API_BUILIDNG, formData);
+        return await api.post(`${API_BUILIDNG}`, formData);
     };
 
     updateBuilding = async (id, building) => {
@@ -37,15 +37,15 @@ export default class BuildingService {
                 formData.append(key, building[key]);
             }
         }
-        return await axios.put(`${API_BUILIDNG}/${id}`, formData);
+        return await api.put(`${API_BUILIDNG}/${id}`, formData);
     };
 
     deleteBuildings = async (ids) => {
-        return await axios.delete(API_BUILIDNG, { data: ids });
+        return await api.delete(`${API_BUILIDNG}`, { data: ids });
     };
 
     assignBuilding = async ({ staffIds, buildingId }) => {
-        return await axios.post(`${API_BUILIDNG}/assignment-building`, { staffIds, buildingId });
+        return await api.post(`${API_BUILIDNG}/assignment-building`, { staffIds, buildingId });
     };
 
     static getBuildingImageUrl = (filename) => {

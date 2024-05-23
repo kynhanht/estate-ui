@@ -1,20 +1,30 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { persistStore } from 'redux-persist';
 import rootReducer from './rootReducer';
+import logger from 'redux-logger';
+import { thunk } from 'redux-thunk';
 
-const initialState = {};
+export const store = configureStore({
+    reducer: rootReducer,
+    middleware: [thunk, logger],
+});
 
-function configureAppStore(preLoadedState) {
-    const store = configureStore({
-        reducer: rootReducer,
-        preloadedState: preLoadedState,
-    });
+export const persistor = persistStore(store);
 
-    if (process.env.NODE_ENV !== 'production' && module.hot) {
-        module.hot.accept('./rootReducer');
+// const initialState = {};
+// function configureAppStore(preLoadedState) {
+//     const store = configureStore({
+//         reducer: rootReducer,
+//         preloadedState: preLoadedState,
+//         middleware: [thunk, logger],
+//     });
 
-        store.replaceReducer(rootReducer);
-    }
-    return store;
-}
+//     if (process.env.NODE_ENV !== 'production' && module.hot) {
+//         module.hot.accept('./rootReducer');
 
-export default configureAppStore(initialState);
+//         store.replaceReducer(rootReducer);
+//     }
+//     return store;
+// }
+
+// export default configureAppStore(initialState);
