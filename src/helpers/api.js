@@ -3,7 +3,7 @@ import { store } from '~/redux/store';
 
 // Set config defaults when creating the instance
 const api = axios.create({
-    baseURL: 'http://localhost:8081',
+    baseURL: 'http://localhost:8080',
 });
 
 // Alter defaults after instance has been created

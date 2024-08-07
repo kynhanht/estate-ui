@@ -1,43 +1,22 @@
-import {
-    AlipayCircleOutlined,
-    LockOutlined,
-    MobileOutlined,
-    TaobaoCircleOutlined,
-    UserOutlined,
-    WeiboCircleOutlined,
-} from '@ant-design/icons';
-import {
-    LoginForm,
-    ProConfigProvider,
-    ProFormCaptcha,
-    ProFormCheckbox,
-    ProFormText,
-    setAlpha,
-} from '@ant-design/pro-components';
-import { Button, Space, Tabs, message, theme } from 'antd';
-import { useEffect, useState } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
-import styles from './Login.module.scss';
-import classNames from 'classnames';
+import React from 'react';
+import { Button, Checkbox, Form, Grid, Input, theme, Typography, message } from 'antd';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { useEffect } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+// import styles from './Login.module.scss';
+// import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '~/redux/actions/jwtAuthAction';
 import { setError, setMessage } from '~/redux/actions/commonAction';
+// const cx = classNames.bind(styles);
 
-const cx = classNames.bind(styles);
-const tabItems = [
-    {
-        key: 'account',
-        label: 'Account',
-    },
-    {
-        key: 'phone',
-        label: 'Phone',
-    },
-];
+const { useToken } = theme;
+const { useBreakpoint } = Grid;
+const { Text, Title, Link } = Typography;
 
-const Login = () => {
-    const { token } = theme.useToken();
-    const [loginType, setLoginType] = useState('account');
+export default function Login() {
+    const { token } = useToken();
+    const screens = useBreakpoint();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const msg = useSelector((state) => state.commonReducer.message);
@@ -56,183 +35,109 @@ const Login = () => {
         }
     }, [msg, err, dispatch]);
 
-    const iconStyles = {
-        marginInlineStart: '16px',
-        color: setAlpha(token.colorTextBase, 0.2),
-        fontSize: '24px',
-        verticalAlign: 'middle',
-        cursor: 'pointer',
+    const onFinish = (values) => {
+        dispatch(login(values, navigate));
     };
 
-    const handleLogin = (values) => {
-        dispatch(login(values, navigate));
+    const styles = {
+        container: {
+            margin: '0 auto',
+            padding: screens.md ? `${token.paddingXL}px` : `${token.sizeXXL}px ${token.padding}px`,
+            width: '380px',
+        },
+        footer: {
+            marginTop: token.marginLG,
+            textAlign: 'center',
+            width: '100%',
+        },
+        forgotPassword: {
+            float: 'right',
+        },
+        header: {
+            marginBottom: token.marginXL,
+        },
+        section: {
+            alignItems: 'center',
+            backgroundColor: token.colorBgContainer,
+            display: 'flex',
+            height: screens.sm ? '100vh' : 'auto',
+            padding: screens.md ? `${token.sizeXXL}px 0px` : '0px',
+        },
+        text: {
+            color: token.colorTextSecondary,
+        },
+        title: {
+            fontSize: screens.md ? token.fontSizeHeading2 : token.fontSizeHeading3,
+        },
     };
 
     if (!isAuthenticated) {
         return (
-            <ProConfigProvider hashed={false}>
-                <div style={{ backgroundColor: token.colorBgContainer }} className={cx('')}>
-                    <LoginForm
-                        title="Login Form"
-                        subTitle="Please enter your information"
-                        size="large"
-                        submitter={{
-                            render: () => {
-                                return (
-                                    <Button type="primary" block htmlType="submit">
-                                        Login
-                                    </Button>
-                                );
-                            },
+            <section style={styles.section}>
+                <div style={styles.container}>
+                    <div style={styles.header}>
+                        <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="0.464294" width="24" height="24" rx="4.8" fill="#1890FF" />
+                            <path d="M14.8643 3.6001H20.8643V9.6001H14.8643V3.6001Z" fill="white" />
+                            <path d="M10.0643 9.6001H14.8643V14.4001H10.0643V9.6001Z" fill="white" />
+                            <path d="M4.06427 13.2001H11.2643V20.4001H4.06427V13.2001Z" fill="white" />
+                        </svg>
+
+                        <Title style={styles.title}>Sign in</Title>
+                        <Text style={styles.text}>
+                            Welcome back to Estate Website! Please enter your details below to sign in.
+                        </Text>
+                    </div>
+                    <Form
+                        name="normal_login"
+                        initialValues={{
+                            remember: true,
                         }}
-                        onFinish={handleLogin}
-                        actions={
-                            <Space>
-                                Methods
-                                <AlipayCircleOutlined style={iconStyles} />
-                                <TaobaoCircleOutlined style={iconStyles} />
-                                <WeiboCircleOutlined style={iconStyles} />
-                            </Space>
-                        }
+                        onFinish={onFinish}
+                        layout="vertical"
+                        requiredMark="optional"
                     >
-                        <Tabs
-                            centered
-                            activeKey={loginType}
-                            onChange={(activeKey) => setLoginType(activeKey)}
-                            items={tabItems}
-                        />
-
-                        {loginType === 'account' && (
-                            <>
-                                <ProFormText
-                                    name="userName"
-                                    fieldProps={{
-                                        size: 'large',
-                                        prefix: <UserOutlined className={'prefixIcon'} />,
-                                    }}
-                                    placeholder={'Enter your username'}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Username is required',
-                                        },
-                                    ]}
-                                />
-                                <ProFormText.Password
-                                    name="password"
-                                    fieldProps={{
-                                        size: 'large',
-                                        prefix: <LockOutlined className={'prefixIcon'} />,
-                                        strengthText:
-                                            'Password should contain numbers, letters and special characters, at least 8 characters long.',
-
-                                        statusRender: (value) => {
-                                            const getStatus = () => {
-                                                if (value && value.length > 12) {
-                                                    return 'ok';
-                                                }
-                                                if (value && value.length > 6) {
-                                                    return 'pass';
-                                                }
-                                                return 'poor';
-                                            };
-                                            const status = getStatus();
-                                            if (status === 'pass') {
-                                                return (
-                                                    <div style={{ color: token.colorWarning }}>Strength: Medium</div>
-                                                );
-                                            }
-                                            if (status === 'ok') {
-                                                return (
-                                                    <div style={{ color: token.colorSuccess }}>Strength: strong</div>
-                                                );
-                                            }
-                                            return <div style={{ color: token.colorError }}>Strength: weak</div>;
-                                        },
-                                    }}
-                                    placeholder={'Enter your password'}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Password is required',
-                                        },
-                                    ]}
-                                />
-                            </>
-                        )}
-                        {loginType === 'phone' && (
-                            <>
-                                <ProFormText
-                                    fieldProps={{
-                                        size: 'large',
-                                        prefix: <MobileOutlined className={'prefixIcon'} />,
-                                    }}
-                                    name="mobile"
-                                    placeholder={'Enter your phone'}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please enter phone number!',
-                                        },
-                                        {
-                                            pattern: /^1\d{10}$/,
-                                            message: 'Malformed phone number!',
-                                        },
-                                    ]}
-                                />
-                                <ProFormCaptcha
-                                    fieldProps={{
-                                        size: 'large',
-                                        prefix: <LockOutlined className={'prefixIcon'} />,
-                                    }}
-                                    captchaProps={{
-                                        size: 'large',
-                                    }}
-                                    placeholder={'Enter the captcha'}
-                                    captchaTextRender={(timing, count) => {
-                                        if (timing) {
-                                            return `${count} seconds later`;
-                                        }
-                                        return 'Get verification code';
-                                    }}
-                                    name="captcha"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please enter verification code!',
-                                        },
-                                    ]}
-                                    onGetCaptcha={async () => {
-                                        message.success(
-                                            'Obtained verification code successfully! The verification code is: 1234',
-                                        );
-                                    }}
-                                />
-                            </>
-                        )}
-                        <div
-                            style={{
-                                marginBlockEnd: 24,
-                            }}
+                        <Form.Item
+                            name="userName"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your username!',
+                                },
+                            ]}
                         >
-                            <ProFormCheckbox noStyle name="autoLogin">
-                                Keep me logged in
-                            </ProFormCheckbox>
-                            <Link
-                                style={{
-                                    float: 'right',
-                                }}
-                            >
-                                Forgot password
-                            </Link>
-                        </div>
-                    </LoginForm>
+                            <Input prefix={<UserOutlined />} placeholder="Username" />
+                        </Form.Item>
+                        <Form.Item
+                            name="password"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your Password!',
+                                },
+                            ]}
+                        >
+                            <Input.Password prefix={<LockOutlined />} type="password" placeholder="Password" />
+                        </Form.Item>
+                        <Form.Item>
+                            <Form.Item name="remember" valuePropName="checked" noStyle>
+                                <Checkbox>Remember me</Checkbox>
+                            </Form.Item>
+                            <Link style={styles.forgotPassword}>Forgot password?</Link>
+                        </Form.Item>
+                        <Form.Item style={{ marginBottom: '0px' }}>
+                            <Button block="true" type="primary" htmlType="submit">
+                                Log in
+                            </Button>
+                            <div style={styles.footer}>
+                                <Text style={styles.text}>Don't have an account?</Text> <Link href="">Sign up now</Link>
+                            </div>
+                        </Form.Item>
+                    </Form>
                 </div>
-            </ProConfigProvider>
+            </section>
         );
     } else {
         return <Navigate to="/" replace />;
     }
-};
-
-export default Login;
+}
