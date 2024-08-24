@@ -141,9 +141,9 @@ class AddOrEditBuilding extends Component {
             };
         }
 
-        let title = 'Add New Building';
+        let title = 'Thêm mới tòa nhà';
         if (building.id) {
-            title = 'Update Building';
+            title = 'Cập nhập tòa nhà';
         }
 
         return (
@@ -159,16 +159,16 @@ class AddOrEditBuilding extends Component {
                     ref={this.formRef}
                     disabled={isLoading}
                 >
-                    <Form.Item label="Building ID" name="id" hidden={true} initialValue={building.id}>
+                    <Form.Item label="ID" name="id" hidden={true} initialValue={building.id}>
                         <Input />
                     </Form.Item>
                     <Form.Item
-                        label="Building Name"
+                        label="Tên tòa nhà"
                         name="buildingName"
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input Builiding Name!',
+                                message: 'Vui lòng nhập tên tòa nhà!',
                             },
                         ]}
                         initialValue={building.buildingName}
@@ -176,26 +176,19 @@ class AddOrEditBuilding extends Component {
                         <Input />
                     </Form.Item>
 
-                    <Form.Item label="District" name="districtCode" initialValue={building.districtCode}>
-                        <Select
-                            style={{
-                                width: 120,
-                            }}
-                            allowClear
-                            options={buildingDistricts}
-                            placeholder="Select District"
-                        ></Select>
+                    <Form.Item label="Quận" name="districtCode" initialValue={building.districtCode}>
+                        <Select allowClear options={buildingDistricts} placeholder="Chọn một quận"></Select>
                     </Form.Item>
-                    <Form.Item label="Ward" name="ward" initialValue={building.ward}>
+                    <Form.Item label="Phường" name="ward" initialValue={building.ward}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Street" name="street" initialValue={building.street}>
+                    <Form.Item label="Đường" name="street" initialValue={building.street}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Structure" name="structure" initialValue={building.structure}>
+                    <Form.Item label="Cấu trúc" name="structure" initialValue={building.structure}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Basement Number" name="numberOfBasement" initialValue={building.numberOfBasement}>
+                    <Form.Item label="Số tầng hầm" name="numberOfBasement" initialValue={building.numberOfBasement}>
                         <InputNumber
                             min={1}
                             style={{
@@ -203,7 +196,7 @@ class AddOrEditBuilding extends Component {
                             }}
                         />
                     </Form.Item>
-                    <Form.Item label="Floor Area" name="floorArea" initialValue={building.floorArea}>
+                    <Form.Item label="Diện tích sàn" name="floorArea" initialValue={building.floorArea}>
                         <InputNumber
                             min={0}
                             addonAfter={'m2'}
@@ -212,27 +205,27 @@ class AddOrEditBuilding extends Component {
                             }}
                         />
                     </Form.Item>
-                    <Form.Item label="Direction" name="direction" initialValue={building.direction}>
+                    <Form.Item label="Hướng" name="direction" initialValue={building.direction}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Level" name="level" initialValue={building.level}>
+                    <Form.Item label="Hạng" name="level" initialValue={building.level}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Rent Area" name="rentArea" initialValue={building.rentArea}>
+                    <Form.Item label="Diện tích thuê" name="rentArea" initialValue={building.rentArea}>
                         <Input />
                     </Form.Item>
                     <Form.Item
-                        label="Rent Area Description"
+                        label="Mô tả diện tích thuê"
                         name="rentAreaDescription"
                         initialValue={building.rentAreaDescription}
                     >
                         <Input.TextArea />
                     </Form.Item>
                     <Form.Item
-                        label="Rent Price"
+                        label="Giá thuê"
                         name="rentPrice"
                         initialValue={building.rentPrice}
-                        rules={[{ required: true, message: 'Please input Rent Price!' }]}
+                        rules={[{ required: true, message: 'Xin vui lòng nhập giá thuê!' }]}
                         hasFeedback
                     >
                         <InputNumber
@@ -246,74 +239,74 @@ class AddOrEditBuilding extends Component {
                         />
                     </Form.Item>
                     <Form.Item
-                        label="Rent Price Description"
+                        label="Mô tả giá thuê"
                         name="rentPriceDescription"
                         initialValue={building.rentPriceDescription}
                     >
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Service Fee" name="serviceFee" initialValue={building.serviceFee}>
+                    <Form.Item label="Phí dịch vụ" name="serviceFee" initialValue={building.serviceFee}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Car Fee" name="carFee" initialValue={building.carFee}>
+                    <Form.Item label="Phí ô tô" name="carFee" initialValue={building.carFee}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Motorbike Fee" name="motorbikeFee" initialValue={building.motorbikeFee}>
+                    <Form.Item label="Phí xe máy" name="motorbikeFee" initialValue={building.motorbikeFee}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Overtime Fee" name="overtimeFee" initialValue={building.overtimeFee}>
+                    <Form.Item label="Phí ngoài giờ" name="overtimeFee" initialValue={building.overtimeFee}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Water Fee" name="waterFee" initialValue={building.waterFee}>
+                    <Form.Item label="Tiền nước" name="waterFee" initialValue={building.waterFee}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Electricity Fee" name="electricityFee" initialValue={building.electricityFee}>
+                    <Form.Item label="Tiền điện" name="electricityFee" initialValue={building.electricityFee}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Deposit" name="deposit" initialValue={building.deposit}>
+                    <Form.Item label="Đặt cọc" name="deposit" initialValue={building.deposit}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Payment" name="payment" initialValue={building.payment}>
+                    <Form.Item label="Hình thức thanh toán" name="payment" initialValue={building.payment}>
                         <Input />
                     </Form.Item>
                     <Form.Item
-                        label="Rent Time"
+                        label="Thời gian thuê"
                         name="rentTime"
                         initialValue={building.rentTime ? dayjs(building.rentTime, dateFormat) : null}
                     >
-                        <DatePicker format={dateFormat} placeholder="Select Rent Time" />
+                        <DatePicker format={dateFormat} placeholder="Select " />
                     </Form.Item>
                     <Form.Item
-                        label="Decoration Time"
+                        label="Thời gian trang trí"
                         name="decorationTime"
                         initialValue={building.decorationTime ? dayjs(building.decorationTime, dateFormat) : null}
                     >
                         <DatePicker format={dateFormat} placeholder="Select Decoration Time" />
                     </Form.Item>
-                    <Form.Item label="Manager Name" name="managerName" initialValue={building.managerName}>
+                    <Form.Item label="Tên người quản lý" name="managerName" initialValue={building.managerName}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Manager Phone" name="managerPhone" initialValue={building.managerPhone}>
+                    <Form.Item label="SĐT người quản lý" name="managerPhone" initialValue={building.managerPhone}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Brokerage Fee" name="brokerageFee" initialValue={building.brokerageFee}>
+                    <Form.Item label="Phí môi giới" name="brokerageFee" initialValue={building.brokerageFee}>
                         <Input />
                     </Form.Item>
-                    <Form.Item name="buildingTypes" label="Building Types" initialValue={building.buildingTypes || []}>
+                    <Form.Item label="Loại tòa nhà" name="buildingTypes" initialValue={building.buildingTypes || []}>
                         <Checkbox.Group options={buildingTypes} />
                     </Form.Item>
-                    <Form.Item label="Note" name="note" initialValue={building.note}>
+                    <Form.Item label="Ghi chú" name="note" initialValue={building.note}>
                         <ReactQuill theme="snow" />
                     </Form.Item>
-                    <Form.Item label="Building Link" name="linkOfBuilding" initialValue={building.linkOfBuilding}>
+                    <Form.Item label="Link tòa nhà" name="linkOfBuilding" initialValue={building.linkOfBuilding}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Map" name="map" initialValue={building.map}>
+                    <Form.Item label="Bản đồ" name="map" initialValue={building.map}>
                         <Input />
                     </Form.Item>
                     <Form.Item
+                        label="Hình ảnh"
                         name="imageFile"
-                        label="Image"
                         valuePropName="fileList"
                         getValueFromEvent={this.normImageFile}
                         extra="Choose your image"
@@ -341,18 +334,18 @@ class AddOrEditBuilding extends Component {
                     <Divider />
                     {building.id ? (
                         <Popconfirm
-                            title="Are you sure update this building"
+                            title="Bạn có chắc muốn cập nhập tòa nhà này không?"
                             onConfirm={this.confirmUpdate}
-                            okText="Yes"
-                            cancelText="No"
+                            okText="Có"
+                            cancelText="Không"
                         >
                             <Button type="primary" loading={isLoading}>
-                                Update
+                                Cập nhập
                             </Button>
                         </Popconfirm>
                     ) : (
                         <Button htmlType="submit" type="primary" loading={isLoading}>
-                            Save
+                            Thêm mới
                         </Button>
                     )}
                 </Form>

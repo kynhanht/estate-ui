@@ -11,13 +11,13 @@ class UserSearchForm extends Component {
         return (
             <Collapse
                 className={cx('')}
-                size="small"
+                size="medium"
                 defaultActiveKey={['collapsePanel1']}
                 expandIconPosition="end"
                 items={[
                     {
                         key: 'collapsePanel1',
-                        label: 'Search',
+                        label: 'Tìm kiếm',
                         children: (
                             <>
                                 <Form
@@ -32,12 +32,12 @@ class UserSearchForm extends Component {
                                     onFinish={handleSubmitForm}
                                     ref={searchingFormRef}
                                 >
-                                    <Form.Item label="User Name" name="userName">
+                                    <Form.Item label="Tên đăng nhập" name="userName">
                                         <Input />
                                     </Form.Item>
                                     <Form.Item wrapperCol={{ offset: 4, span: 6 }}>
                                         <Button htmlType="submit" type="primary">
-                                            Search
+                                            Tìm kiếm
                                             <ArrowRightOutlined />
                                         </Button>
                                     </Form.Item>

@@ -6,7 +6,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 // import styles from './Login.module.scss';
 // import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '~/redux/actions/jwtAuthAction';
+import { login } from '~/redux/actions/authAction';
 import { setError, setMessage } from '~/redux/actions/commonAction';
 // const cx = classNames.bind(styles);
 

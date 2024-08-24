@@ -42,7 +42,7 @@ class ListUser extends Component {
 
         return (
             <>
-                <ContentPageHeader navigate={navigate} title="List Users" className={cx('')} />
+                <ContentPageHeader navigate={navigate} title="Danh sách tài khoản" className={cx('')} />
 
                 <UserSearchForm searchingFormRef={this.searchingFormRef} handleSubmitForm={this.handleSubmitForm} />
 

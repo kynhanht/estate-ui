@@ -34,13 +34,13 @@ class CustomerList extends Component {
         super(props);
         this.columns = [
             {
-                title: 'Full Name',
+                title: 'Họ và tên',
                 key: 'fullName',
                 dataIndex: 'fullName',
                 align: 'left',
             },
             {
-                title: 'Phone',
+                title: 'Số điện thoại',
                 key: 'phone',
                 dataIndex: 'phone',
                 align: 'left',
@@ -52,25 +52,25 @@ class CustomerList extends Component {
                 align: 'left',
             },
             {
-                title: 'Demand',
+                title: 'Nhu cầu',
                 key: 'demand',
                 dataIndex: 'demand',
                 align: 'left',
             },
             {
-                title: 'Modified By',
+                title: 'Sửa đổi bởi',
                 key: 'modifiedBy',
                 dataIndex: 'modifiedBy',
                 align: 'left',
             },
             {
-                title: 'Modified Date',
+                title: 'Ngày sửa đổi',
                 key: 'modifiedDate',
                 dataIndex: 'modifiedDate',
                 align: 'left',
             },
             {
-                title: 'Action',
+                title: 'Thao tác',
                 key: 'action',
                 align: 'center',
                 render: (_, customer) => {
@@ -197,13 +197,13 @@ class CustomerList extends Component {
     // Delete customer
     openDeleteCustomersConfirmModal = () => {
         Modal.confirm({
-            title: 'Confirm',
+            title: 'Xác nhận',
             icon: <ExclamationCircleOutlined />,
-            content: 'Are you sure you want to delete the customers',
+            content: 'Bạn có chắc muốn xóa những khách hàng này không?',
             onOk: this.handleDeleteCustomersOk,
-            okText: 'Delete',
+            okText: 'Xóa',
             okType: 'danger',
-            cancelText: 'Cancel',
+            cancelText: 'Hủy',
             height: 400,
         });
     };
@@ -298,9 +298,13 @@ class CustomerList extends Component {
                         onClick={this.openDeleteCustomersConfirmModal}
                     />
                 </Space>
-                <Typography.Title level={4}>List Customers</Typography.Title>
                 <Table
                     className={cx('')}
+                    title={() => (
+                        <div style={{ textAlign: 'center', fontSize: '25px', fontWeight: 'bold' }}>
+                            Danh sách khách hàng
+                        </div>
+                    )}
                     dataSource={customers}
                     size="small"
                     rowKey="id"
@@ -319,18 +323,20 @@ class CustomerList extends Component {
                         onChange: this.handleCustomerPagination,
                     }}
                 />
-                <Typography.Text style={{ marginRight: '20px' }}>Export options:</Typography.Text>
+                <Typography.Text style={{ marginRight: '20px' }}>Xuất file:</Typography.Text>
                 <Space split={<Divider type="vertical" />}>
                     <Typography.Link onClick={() => this.handleExportExcel(customers)}>Excel</Typography.Link>
                     <Typography.Link onClick={() => this.handleExportPDF(customers)}>PDF</Typography.Link>
                 </Space>
                 <Modal
-                    title="List of Staffs"
+                    title="Giao khách hàng cho nhân viên"
                     open={this.state.isModalOpen}
                     width={'40vw'}
                     onOk={this.handleAssignmentOk}
                     onCancel={this.handleAssignmentCancel}
                     destroyOnClose={true}
+                    cancelText="Hủy"
+                    okText="Xác nhận"
                 >
                     <Divider />
                     <Table
@@ -340,14 +346,14 @@ class CustomerList extends Component {
                         bordered
                         rowSelection={{
                             type: 'checkbox',
-                            columnTitle: 'Select',
+                            columnTitle: 'Chọn',
                             columnWidth: '50%',
                             defaultSelectedRowKeys: selectedStaffs.map((staff) => staff.staffId),
                             onChange: this.handleStaffSelection,
                         }}
                         columns={[
                             {
-                                title: 'Name Staff',
+                                title: 'Tên nhân viên',
                                 key: 'fullName',
                                 dataIndex: 'fullName',
                                 align: 'left',

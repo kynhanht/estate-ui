@@ -79,9 +79,9 @@ class AddOrEditBuilding extends Component {
         const { isLoading } = this.props;
         const { user, roles } = this.state;
 
-        let title = 'Add New User';
+        let title = 'Thêm mới người dùng';
         if (user.id) {
-            title = 'Update User';
+            title = 'Cập nhập người dùng';
         }
 
         return (
@@ -97,16 +97,16 @@ class AddOrEditBuilding extends Component {
                     ref={this.formRef}
                     disabled={isLoading}
                 >
-                    <Form.Item label="User ID" name="id" hidden={true} initialValue={user.id}>
+                    <Form.Item label="ID" name="id" hidden={true} initialValue={user.id}>
                         <Input />
                     </Form.Item>
                     <Form.Item
-                        label="Role"
+                        label="Vai trò"
                         name="roleCode"
                         rules={[
                             {
                                 required: true,
-                                message: 'Please choose Role!',
+                                message: 'Vui lòng chọn một vai trò!',
                             },
                         ]}
                         initialValue={user.roleCode}
@@ -117,16 +117,16 @@ class AddOrEditBuilding extends Component {
                             }}
                             allowClear
                             options={roles}
-                            placeholder="Select Role"
+                            placeholder="Chọn vai trò"
                         ></Select>
                     </Form.Item>
                     <Form.Item
-                        label="User Name"
+                        label="Tên đăng nhập"
                         name="userName"
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input User Name!',
+                                message: 'Vui lòng nhập tên đăng nhập!',
                             },
                         ]}
                         initialValue={user.userName}
@@ -135,12 +135,12 @@ class AddOrEditBuilding extends Component {
                     </Form.Item>
 
                     <Form.Item
-                        label="Full Name"
+                        label="Họ và tên"
                         name="fullName"
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input Full Name!',
+                                message: 'Vui lòng nhập họ và tên!',
                             },
                         ]}
                         initialValue={user.fullName}
@@ -151,18 +151,18 @@ class AddOrEditBuilding extends Component {
                     <Divider />
                     {user.id ? (
                         <Popconfirm
-                            title="Are you sure update this user"
+                            title="Bạn có chắc muốn cập nhập tài khoản này"
                             onConfirm={this.confirmUpdate}
-                            okText="Yes"
-                            cancelText="No"
+                            okText="Xác nhận"
+                            cancelText="Hủy"
                         >
                             <Button type="primary" loading={isLoading}>
-                                Update
+                                Cập nhập
                             </Button>
                         </Popconfirm>
                     ) : (
                         <Button htmlType="submit" type="primary" loading={isLoading}>
-                            Save
+                            Thêm mới
                         </Button>
                     )}
                 </Form>

@@ -11,13 +11,13 @@ class CustomerSearchForm extends Component {
         return (
             <Collapse
                 className={cx('')}
-                size="small"
+                size="medium"
                 defaultActiveKey={['collapsePanel1']}
                 expandIconPosition="end"
                 items={[
                     {
                         key: 'collapsePanel1',
-                        label: 'Search',
+                        label: 'Tìm kiếm',
                         children: (
                             <>
                                 <Form
@@ -28,12 +28,12 @@ class CustomerSearchForm extends Component {
                                 >
                                     <Row gutter={[24, 8]}>
                                         <Col md={8}>
-                                            <Form.Item label="Full name" name="fullName">
+                                            <Form.Item label="Họ và tên" name="fullName">
                                                 <Input />
                                             </Form.Item>
                                         </Col>
                                         <Col md={8}>
-                                            <Form.Item label="Phone" name="phone">
+                                            <Form.Item label="Số điện thoại" name="phone">
                                                 <Input />
                                             </Form.Item>
                                         </Col>
@@ -46,9 +46,9 @@ class CustomerSearchForm extends Component {
 
                                     <Row gutter={[24, 8]}>
                                         <Col md={6}>
-                                            <Form.Item label="Staff" name="staffId">
+                                            <Form.Item label="Tên nhân viên" name="staffId">
                                                 <Select
-                                                    placeholder="Select staff"
+                                                    placeholder="Chọn một nhân viên"
                                                     style={{
                                                         width: 200,
                                                     }}
@@ -61,7 +61,7 @@ class CustomerSearchForm extends Component {
                                     <Row gutter={[24, 8]}>
                                         <Col md={24}>
                                             <Button htmlType="submit" type="primary">
-                                                Search
+                                                Tìm kiếm
                                                 <ArrowRightOutlined />
                                             </Button>
                                         </Col>

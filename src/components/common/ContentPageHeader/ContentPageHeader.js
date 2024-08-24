@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import styles from './ContentPageHeader.module.scss';
-import classNames from 'classnames';
+import classNames from 'classnames/bind';
 import { PageHeader } from '@ant-design/pro-layout';
 import { Divider } from 'antd';
 
@@ -8,10 +8,10 @@ const cx = classNames.bind(styles);
 
 class ContentPageHeader extends Component {
     render() {
-        const { navigate, title, className } = this.props;
+        const { navigate, title } = this.props;
         return (
             <>
-                <PageHeader className={cx(className)} title={title} onBack={() => navigate(-1)} />
+                <PageHeader className={cx('')} title={title} onBack={() => navigate(-1)} />
                 <Divider />
             </>
         );

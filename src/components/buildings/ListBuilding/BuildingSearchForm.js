@@ -11,13 +11,14 @@ class BuildingSearchForm extends Component {
         return (
             <Collapse
                 className={cx('')}
-                size="small"
+                size="medium"
                 defaultActiveKey={['collapsePanel1']}
                 expandIconPosition="end"
                 items={[
                     {
                         key: 'collapsePanel1',
-                        label: 'Search',
+                        label: 'Tìm kiếm',
+
                         children: (
                             <>
                                 <Form
@@ -28,12 +29,12 @@ class BuildingSearchForm extends Component {
                                 >
                                     <Row gutter={[24, 8]}>
                                         <Col md={12}>
-                                            <Form.Item label="Building Name" name="buildingName">
+                                            <Form.Item label="Tên tòa nhà" name="buildingName">
                                                 <Input />
                                             </Form.Item>
                                         </Col>
                                         <Col md={12}>
-                                            <Form.Item label="Rent Area" name="rentArea">
+                                            <Form.Item label="Diện tích thuê" name="rentArea">
                                                 <InputNumber
                                                     style={{
                                                         width: '100%',
@@ -44,52 +45,49 @@ class BuildingSearchForm extends Component {
                                     </Row>
                                     <Row gutter={[24, 8]}>
                                         <Col md={8}>
-                                            <Form.Item label="District" name="districtCode">
+                                            <Form.Item label="Quận" name="districtCode">
                                                 <Select
-                                                    placeholder="Select District"
-                                                    style={{
-                                                        width: '40%',
-                                                    }}
+                                                    placeholder="Chọn một quận"
                                                     allowClear
                                                     options={buildingDistricts}
                                                 ></Select>
                                             </Form.Item>
                                         </Col>
                                         <Col md={8}>
-                                            <Form.Item label="Ward" name="ward">
+                                            <Form.Item label="Phường" name="ward">
                                                 <Input />
                                             </Form.Item>
                                         </Col>
                                         <Col md={8}>
-                                            <Form.Item label="Street" name="street">
-                                                <Input />
-                                            </Form.Item>
-                                        </Col>
-                                    </Row>
-                                    <Row gutter={[24, 8]}>
-                                        <Col md={8}>
-                                            <Form.Item label="Number of Basement" name="numberOfBasement">
-                                                <InputNumber
-                                                    style={{
-                                                        width: '100%',
-                                                    }}
-                                                />
-                                            </Form.Item>
-                                        </Col>
-                                        <Col md={8}>
-                                            <Form.Item label="Direction" name="direction">
-                                                <Input />
-                                            </Form.Item>
-                                        </Col>
-                                        <Col md={8}>
-                                            <Form.Item label="Level" name="level">
+                                            <Form.Item label="Đường" name="street">
                                                 <Input />
                                             </Form.Item>
                                         </Col>
                                     </Row>
                                     <Row gutter={[24, 8]}>
+                                        <Col md={8}>
+                                            <Form.Item label="Số tầng hầm" name="numberOfBasement">
+                                                <InputNumber
+                                                    style={{
+                                                        width: '100%',
+                                                    }}
+                                                />
+                                            </Form.Item>
+                                        </Col>
+                                        <Col md={8}>
+                                            <Form.Item label="Hướng" name="direction">
+                                                <Input />
+                                            </Form.Item>
+                                        </Col>
+                                        <Col md={8}>
+                                            <Form.Item label="Hạng" name="level">
+                                                <Input />
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
+                                    <Row gutter={[24, 8]}>
                                         <Col md={6}>
-                                            <Form.Item label="Rent Area From" name="rentAreaFrom">
+                                            <Form.Item label="Diện tích thuê từ" name="rentAreaFrom">
                                                 <InputNumber
                                                     style={{
                                                         width: '100%',
@@ -98,7 +96,7 @@ class BuildingSearchForm extends Component {
                                             </Form.Item>
                                         </Col>
                                         <Col md={6}>
-                                            <Form.Item label="Rent Area To" name="rentAreaTo">
+                                            <Form.Item label="Diện tích thuê đến" name="rentAreaTo">
                                                 <InputNumber
                                                     style={{
                                                         width: '100%',
@@ -107,7 +105,7 @@ class BuildingSearchForm extends Component {
                                             </Form.Item>
                                         </Col>
                                         <Col md={6}>
-                                            <Form.Item label="Rent Price From" name="rentPriceFrom">
+                                            <Form.Item label="Giá thuê từ" name="rentPriceFrom">
                                                 <InputNumber
                                                     style={{
                                                         width: '100%',
@@ -116,7 +114,7 @@ class BuildingSearchForm extends Component {
                                             </Form.Item>
                                         </Col>
                                         <Col md={6}>
-                                            <Form.Item label="Rent Price To" name="rentPriceTo">
+                                            <Form.Item label="Giá Thuê đến" name="rentPriceTo">
                                                 <InputNumber
                                                     style={{
                                                         width: '100%',
@@ -127,21 +125,21 @@ class BuildingSearchForm extends Component {
                                     </Row>
                                     <Row gutter={[24, 8]}>
                                         <Col md={9}>
-                                            <Form.Item label="Manager Name" name="managerName">
+                                            <Form.Item label="Tên quản lý" name="managerName">
                                                 <Input />
                                             </Form.Item>
                                         </Col>
                                         <Col md={9}>
-                                            <Form.Item label="Manager Phone" name="Manager Phone">
+                                            <Form.Item label="SĐT quản lý" name="managerPhone">
                                                 <Input />
                                             </Form.Item>
                                         </Col>
                                         <Col md={6}>
-                                            <Form.Item label="Staff" name="staffId">
+                                            <Form.Item label="Nhân viên" name="staffId">
                                                 <Select
-                                                    placeholder="Select staff"
+                                                    placeholder="Chọn một nhân viên"
                                                     style={{
-                                                        width: 200,
+                                                        width: '100%',
                                                     }}
                                                     allowClear
                                                     options={staffs}
@@ -151,7 +149,7 @@ class BuildingSearchForm extends Component {
                                     </Row>
                                     <Row gutter={[24, 8]}>
                                         <Col md={24}>
-                                            <Form.Item name="buildingTypes" label="Building Types" initialValue={[]}>
+                                            <Form.Item name="buildingTypes" label="Loại tòa nhà" initialValue={[]}>
                                                 <Checkbox.Group options={buildingTypes} />
                                             </Form.Item>
                                         </Col>
@@ -159,7 +157,7 @@ class BuildingSearchForm extends Component {
                                     <Row gutter={[24, 8]}>
                                         <Col md={24}>
                                             <Button htmlType="submit" type="primary">
-                                                Search
+                                                Tìm kiếm
                                                 <ArrowRightOutlined />
                                             </Button>
                                         </Col>

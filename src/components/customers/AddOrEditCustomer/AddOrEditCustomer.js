@@ -26,25 +26,25 @@ class AddOrEditCustomer extends Component {
         super(props);
         this.transactionColumns = [
             {
-                title: 'Created By',
+                title: 'Tạo bỏi',
                 key: 'createdBy',
                 dataIndex: 'createdBy',
                 align: 'left',
             },
             {
-                title: 'Created Date',
+                title: 'Ngày tạo',
                 key: 'createdDate',
                 dataIndex: 'createdDate',
                 align: 'left',
             },
             {
-                title: 'Appointment Date',
+                title: 'Ngày hẹn gặp',
                 key: 'appointmentDate',
                 dataIndex: 'appointmentDate',
                 align: 'left',
             },
             {
-                title: 'Note',
+                title: 'Ghi chú',
                 key: 'note',
                 dataIndex: 'note',
                 align: 'left',
@@ -140,9 +140,9 @@ class AddOrEditCustomer extends Component {
         const { combinationTransactions, isLoading } = this.props;
         const { customer, transactionTypes } = this.state;
         console.log(transactionTypes);
-        let title = 'Add New Customer';
+        let title = 'Thêm mới khách hàng';
         if (customer.id) {
-            title = 'Update Customer';
+            title = 'Cập nhập khách hàng';
         }
 
         return (
@@ -158,26 +158,26 @@ class AddOrEditCustomer extends Component {
                     ref={this.customerFormRef}
                     disabled={isLoading}
                 >
-                    <Form.Item label="Customer ID" name="id" hidden={true} initialValue={customer.id}>
+                    <Form.Item label="ID" name="id" hidden={true} initialValue={customer.id}>
                         <Input />
                     </Form.Item>
 
-                    <Form.Item label="Full Name" name="fullName" initialValue={customer.fullName}>
+                    <Form.Item label="Họ và tên" name="fullName" initialValue={customer.fullName}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Phone" name="phone" initialValue={customer.phone}>
+                    <Form.Item label="Số điện thoại" name="phone" initialValue={customer.phone}>
                         <Input />
                     </Form.Item>
                     <Form.Item label="Email" name="email" initialValue={customer.email}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Company" name="company" initialValue={customer.company}>
+                    <Form.Item label="Công ty" name="company" initialValue={customer.company}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Demand" name="demand" initialValue={customer.demand}>
+                    <Form.Item label="Nhu cầu" name="demand" initialValue={customer.demand}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Note" name="note" initialValue={customer.note}>
+                    <Form.Item label="Ghi chú" name="note" initialValue={customer.note}>
                         <ReactQuill theme="snow" />
                     </Form.Item>
 
@@ -190,12 +190,12 @@ class AddOrEditCustomer extends Component {
                             cancelText="No"
                         >
                             <Button type="primary" loading={isLoading}>
-                                Update
+                                Cập nhập
                             </Button>
                         </Popconfirm>
                     ) : (
                         <Button htmlType="submit" type="primary" loading={isLoading}>
-                            Save
+                            Thêm mới
                         </Button>
                     )}
                 </Form>
@@ -231,11 +231,13 @@ class AddOrEditCustomer extends Component {
                     })}
 
                 <Modal
-                    title="Add New Transaction"
+                    title="Thêm mới giao dịch"
                     open={this.state.isModalOpen}
                     onOk={this.handleAddTransactionOk}
                     onCancel={this.handleAddTransactionCancel}
                     destroyOnClose={true}
+                    okText="Xác nhận"
+                    cancelText="Hủy"
                 >
                     <Divider />
                     <Form
@@ -246,15 +248,15 @@ class AddOrEditCustomer extends Component {
                         ref={this.transactionFormRef}
                         onFinish={this.handleSubmitTransactionForm}
                     >
-                        <Form.Item label="Note" name="note">
+                        <Form.Item label="Ghi chú" name="note">
                             <ReactQuill theme="snow" />
                         </Form.Item>
-                        <Form.Item label="Appointment Date" name="appointmentDate">
+                        <Form.Item label="Ngày hẹn gặp" name="appointmentDate">
                             <DatePicker format={dateFormat} />
                         </Form.Item>
-                        <Form.Item label="Transaction" name="code">
+                        <Form.Item label="Loại giao dịch" name="code">
                             <Select
-                                placeholder="Select transaction"
+                                placeholder="Chọn một loại giao dịch"
                                 style={{
                                     width: '100%',
                                     textAlign: 'center',

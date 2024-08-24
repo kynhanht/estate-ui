@@ -6,7 +6,6 @@
     display: flex;
     justify-content: space-between;
     padding-left: 16px;
-    padding-right: 16px;
     background-color: #438eb9;
     height: 64px;
     z-index: 999;
@@ -24,21 +23,19 @@
 }
 
 .logo-name {
-    font-size: 20px;
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .user-info {
-    display: flex;
-    align-items: center;
-    color: white;
-    gap: 10px;
-}
-
-.user-avatar {
+    background-color: #62a8d1;
 }
 
 .user-name {
-    font-size: 16px;
+    padding: 0px 4px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
 }
 
 .content {

@@ -64,7 +64,7 @@ class ListCustomer extends Component {
 
         return (
             <>
-                <ContentPageHeader navigate={navigate} title="List Customers" className={cx('')} />
+                <ContentPageHeader navigate={navigate} title="Danh sách khách hàng" className={cx('')} />
 
                 <CustomerSearchForm
                     staffs={staffs}

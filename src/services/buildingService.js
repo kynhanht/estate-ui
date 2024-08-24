@@ -1,5 +1,5 @@
 import api from '~/helpers/api';
-import { API_BUILIDNG } from './constant';
+import { API_BUILIDNG, BASE_BACKEND_URL } from './constant';
 
 export default class BuildingService {
     searchBuildings = async (buildingSearchRequest, params) => {
@@ -49,6 +49,6 @@ export default class BuildingService {
     };
 
     static getBuildingImageUrl = (filename) => {
-        return API_BUILIDNG + `/image/${filename}`;
+        return BASE_BACKEND_URL + API_BUILIDNG + `/image/${filename}`;
     };
 }

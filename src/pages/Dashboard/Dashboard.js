@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { UserOutlined, KeyOutlined, PoweroffOutlined } from '@ant-design/icons';
+import { UserOutlined, KeyOutlined, PoweroffOutlined, CaretDownFilled } from '@ant-design/icons';
 import classNames from 'classnames/bind';
 import styles from './Dashboard.module.scss';
 import config from '~/config';
-import { logout } from '~/redux/actions/jwtAuthAction';
+import { logout } from '~/redux/actions/authAction';
 
 import {
     MdAddCircleOutline,
@@ -16,7 +16,7 @@ import {
 } from 'react-icons/md';
 
 import { FaFacebookSquare, FaTwitterSquare, FaYoutubeSquare } from 'react-icons/fa';
-import { Breadcrumb, Dropdown, Layout, Menu, message } from 'antd';
+import { Breadcrumb, Dropdown, Layout, Menu, message, Space, Typography } from 'antd';
 import { useNavigate, useLocation, Link, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setError, setMessage } from '~/redux/actions/commonAction';
@@ -53,7 +53,7 @@ const dropdownProps = {
 };
 
 const Dashboard = ({ children }) => {
-    const [marginLeft, setMarginLeft] = useState(200);
+    const [marginLeft, setMarginLeft] = useState(250);
     const [collapsed, setCollapsed] = useState(false);
     const siteLayoutStyle = { marginLeft: marginLeft };
 
@@ -63,6 +63,7 @@ const Dashboard = ({ children }) => {
     const err = useSelector((state) => state.commonReducer.error);
     const token = useSelector((state) => state.jwtAuthReducer.token);
     const roleCode = useSelector((state) => state.jwtAuthReducer.roleCode);
+    const fullName = useSelector((state) => state.jwtAuthReducer.fullName);
     const isAuthenticated = token && roleCode;
 
     // Breadcrumbs
@@ -86,12 +87,12 @@ const Dashboard = ({ children }) => {
 
     let menuItems = [
         {
-            label: 'Users',
+            label: 'Quản lý tài khoản',
             key: '1',
             icon: <MdOutlineSupervisorAccount />,
             children: [
                 {
-                    label: 'List Users',
+                    label: 'Danh sách tài khoản',
                     key: '11',
                     icon: <MdOutlineSupervisorAccount />,
                     onClick: () => {
@@ -99,7 +100,7 @@ const Dashboard = ({ children }) => {
                     },
                 },
                 {
-                    label: 'Add User',
+                    label: 'Thêm tài khoản',
                     key: '12',
                     icon: <MdOutlineFormatListBulleted />,
                     onClick: () => {
@@ -109,12 +110,12 @@ const Dashboard = ({ children }) => {
             ],
         },
         {
-            label: 'Buildings',
+            label: 'Quản lý tòa nhà',
             key: '2',
             icon: <MdOutlineHome />,
             children: [
                 {
-                    label: 'List Buildings',
+                    label: 'Danh sách tòa nhà',
                     key: '21',
                     icon: <MdOutlineFormatListBulleted />,
                     onClick: () => {
@@ -122,7 +123,7 @@ const Dashboard = ({ children }) => {
                     },
                 },
                 {
-                    label: 'Add Building',
+                    label: 'Thêm tòa nhà',
                     key: '22',
                     icon: <MdAddCircleOutline />,
                     onClick: () => {
@@ -132,12 +133,12 @@ const Dashboard = ({ children }) => {
             ],
         },
         {
-            label: 'Customers',
+            label: 'Quản lý khách hành',
             key: '3',
             icon: <MdOutlinePeople />,
             children: [
                 {
-                    label: 'List Customers',
+                    label: 'Danh sách khách hàng',
                     key: '31',
                     icon: <MdOutlineFormatListBulleted />,
                     onClick: () => {
@@ -145,7 +146,7 @@ const Dashboard = ({ children }) => {
                     },
                 },
                 {
-                    label: 'Add Customer',
+                    label: 'Thêm khách hàng',
                     key: '32',
                     icon: <MdAddCircleOutline />,
                     onClick: () => {
@@ -155,7 +156,7 @@ const Dashboard = ({ children }) => {
             ],
         },
         {
-            label: 'Logout',
+            label: 'Đăng xuất',
             key: '4',
             icon: <MdLogout />,
             onClick: handleLogout,
@@ -165,12 +166,12 @@ const Dashboard = ({ children }) => {
     if (token && roleCode === 'ROLE_STAFF') {
         menuItems = [
             {
-                label: 'Buildings',
+                label: 'Quản lý tòa nhà',
                 key: '1',
                 icon: <MdOutlineHome />,
                 children: [
                     {
-                        label: 'List Buildings',
+                        label: 'Danh sách tòa nhà',
                         key: '11',
                         icon: <MdOutlineFormatListBulleted />,
                         onClick: () => {
@@ -180,12 +181,12 @@ const Dashboard = ({ children }) => {
                 ],
             },
             {
-                label: 'Customers',
+                label: 'Quản lý khách hàng',
                 key: '2',
                 icon: <MdOutlinePeople />,
                 children: [
                     {
-                        label: 'List Customers',
+                        label: 'Danh sách khách hàng',
                         key: '21',
                         icon: <MdOutlineFormatListBulleted />,
                         onClick: () => {
@@ -195,7 +196,7 @@ const Dashboard = ({ children }) => {
                 ],
             },
             {
-                label: 'Logout',
+                label: 'Đăng xuất',
                 key: '3',
                 icon: <MdLogout />,
                 onClick: handleLogout,
@@ -221,14 +222,17 @@ const Dashboard = ({ children }) => {
                     <div className={cx('header')}>
                         <div className={cx('logo-info')}>
                             <MdOutlineRealEstateAgent className={cx('logo-icon')} />
-                            <h3 className={cx('logo-name')}>Estate Management</h3>
+                            <div className={cx('logo-name')}>Trang quản trị bất động sản</div>
                         </div>
                         <div className={cx('user-info')}>
-                            {/* <Avatar size="default" icon={<UserOutlined />} />
-                            <h3 className={cx('user-name')}>Nguyen Thanh Ky Nhan</h3> */}
-                            <Dropdown.Button menu={dropdownProps} placement="bottom" icon={<UserOutlined />}>
-                                Xin chào, nguyen van a
-                            </Dropdown.Button>
+                            <Dropdown menu={dropdownProps} placement="bottomLeft">
+                                <Typography.Link>
+                                    <Space className={cx('user-name')}>
+                                        {`Xin chào, ${fullName}`}
+                                        <CaretDownFilled />
+                                    </Space>
+                                </Typography.Link>
+                            </Dropdown>
                         </div>
                     </div>
                 </Header>
@@ -237,8 +241,9 @@ const Dashboard = ({ children }) => {
                         theme="light"
                         collapsible
                         collapsed={collapsed}
+                        width={250}
                         onCollapse={(value) => {
-                            value ? setMarginLeft(80) : setMarginLeft(200);
+                            value ? setMarginLeft(80) : setMarginLeft(250);
                             setCollapsed(value);
                         }}
                         style={{
@@ -273,7 +278,7 @@ const Dashboard = ({ children }) => {
                         >
                             <div className={cx('footer')}>
                                 <div className={cx('footer-content')}>
-                                    <div className={cx('footer-info')}>Designed by kynhanht</div>
+                                    <div className={cx('footer-info')}>Thiết kế bởi kynhanht</div>
                                     <div className={cx('footer-social-list')}>
                                         <a href="https://www.facebook.com/elninohtz">
                                             <FaTwitterSquare />

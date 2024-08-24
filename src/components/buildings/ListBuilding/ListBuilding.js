@@ -82,7 +82,7 @@ class ListBuilding extends Component {
 
         return (
             <>
-                <ContentPageHeader navigate={navigate} title="List Buildings" className={cx('')} />
+                <ContentPageHeader navigate={navigate} title="Danh sách tòa nhà" />
 
                 <BuildingSearchForm
                     buildingDistricts={buildingDistricts}
@@ -93,7 +93,7 @@ class ListBuilding extends Component {
                 />
 
                 {isLoading ? (
-                    <Skeleton active />
+                    <Skeleton active className={cx('')} />
                 ) : (
                     <BuildingList
                         buildings={buildings}

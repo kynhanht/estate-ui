@@ -36,10 +36,10 @@ class BuildingList extends Component {
         super(props);
         this.columns = [
             {
-                title: 'Image',
+                title: 'Ảnh tòa nhà',
                 key: 'imageName',
                 dataIndex: 'imageName',
-                width: 90,
+                width: 150,
                 align: 'center',
                 render: (_, record) => {
                     return (
@@ -53,13 +53,13 @@ class BuildingList extends Component {
                 },
             },
             {
-                title: 'Building Name',
+                title: 'Tên tòa nhà',
                 key: 'buildingName',
                 dataIndex: 'buildingName',
                 align: 'left',
             },
             {
-                title: 'Number Of Basement',
+                title: 'Số tầng hầm',
                 key: 'numberOfBasement',
                 dataIndex: 'numberOfBasement',
                 align: 'left',
@@ -67,38 +67,38 @@ class BuildingList extends Component {
                 sorter: (a, b) => a.numberOfBasement - b.numberOfBasement,
             },
             {
-                title: 'Address',
+                title: 'Địa chỉ',
                 key: 'address',
                 dataIndex: 'address',
                 align: 'left',
             },
             {
-                title: 'Manger Name',
+                title: 'Tên quản lý',
                 key: 'managerName',
                 dataIndex: 'managerName',
                 align: 'left',
             },
             {
-                title: 'Manger Phone',
+                title: 'SĐT quản lý',
                 key: 'managerPhone',
                 dataIndex: 'managerPhone',
                 align: 'left',
             },
             {
-                title: 'Rent Price',
+                title: 'Giá thuê',
                 key: 'rentPrice',
                 dataIndex: 'rentPrice',
                 align: 'left',
                 width: 150,
             },
             {
-                title: 'Service Fee',
+                title: 'Giá dịch vụ',
                 key: 'serviceFee',
                 dataIndex: 'serviceFee',
                 align: 'left',
             },
             {
-                title: 'Action',
+                title: 'Thao tác',
                 key: 'action',
                 align: 'center',
                 render: (_, building) => {
@@ -167,7 +167,6 @@ class BuildingList extends Component {
 
         const headers = tableHeaders.map((column) => ({ header: column.label, dataKey: column.key }));
         const data = buildings.map((building) => Object.values(building));
-        console.log(headers, data);
         const title = 'List of Buildings';
         pdf.text(title, 40, 40);
         pdf.setFont('Roboto', 'bold');
@@ -226,13 +225,13 @@ class BuildingList extends Component {
     // Delete Building
     openDeleteBuildingsCofirmModal = () => {
         Modal.confirm({
-            title: 'Confirm',
+            title: 'Xác nhận',
             icon: <ExclamationCircleOutlined />,
-            content: 'Are you sure you want to delete the buildings',
+            content: 'Bạn có chắc muốn xóa những tòa nhà này không?',
             onOk: this.handleDeleteBuildingsOk,
-            okText: 'Delete',
+            okText: 'Xóa',
             okType: 'danger',
-            cancelText: 'Cancel',
+            cancelText: 'Không',
             height: 400,
         });
     };
@@ -325,8 +324,12 @@ class BuildingList extends Component {
                         onClick={this.openDeleteBuildingsCofirmModal}
                     />
                 </Space>
-                <Typography.Title level={4}>List Buildings</Typography.Title>
                 <Table
+                    title={() => (
+                        <div style={{ textAlign: 'center', fontSize: '25px', fontWeight: 'bold' }}>
+                            Danh sách tòa nhà
+                        </div>
+                    )}
                     className={cx('')}
                     dataSource={buildings}
                     size="small"
@@ -346,17 +349,19 @@ class BuildingList extends Component {
                         onChange: this.handleBuildingPagination,
                     }}
                 />
-                <Typography.Text style={{ marginRight: '20px' }}>Export options:</Typography.Text>
+                <Typography.Text style={{ marginRight: '20px' }}>Xuất file:</Typography.Text>
                 <Space split={<Divider type="vertical" />}>
                     <Typography.Link onClick={() => this.handleExportExcel(buildings)}>Excel</Typography.Link>
                     <Typography.Link onClick={() => this.handleExportPDF(buildings)}>PDF</Typography.Link>
                 </Space>
                 <Modal
-                    title="List of Staffs"
+                    title="Giao tòa nhà cho nhân viên"
                     open={this.state.isModalOpen}
                     width={'40vw'}
                     onOk={this.handleAssignmentOk}
                     onCancel={this.handleAssignmentCancel}
+                    okText="Xác nhận"
+                    cancelText="Hủy"
                     destroyOnClose={true}
                 >
                     <Divider />
@@ -367,14 +372,14 @@ class BuildingList extends Component {
                         bordered
                         rowSelection={{
                             type: 'checkbox',
-                            columnTitle: 'Select',
+                            columnTitle: 'Chọn',
                             columnWidth: '50%',
                             defaultSelectedRowKeys: selectedStaffs.map((staff) => staff.staffId),
                             onChange: this.handleStaffSelection,
                         }}
                         columns={[
                             {
-                                title: 'Name Staff',
+                                title: 'Tên nhân viên',
                                 key: 'fullName',
                                 dataIndex: 'fullName',
                                 align: 'left',

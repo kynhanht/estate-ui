@@ -26,19 +26,20 @@ class UserList extends Component {
         super(props);
         this.columns = [
             {
-                title: 'User Name',
+                title: 'Tên đăng nhập',
                 key: 'userName',
                 dataIndex: 'userName',
                 align: 'left',
+                responsive: ['md'],
             },
             {
-                title: 'Full Name',
+                title: 'Họ và tên',
                 key: 'fullName',
                 dataIndex: 'fullName',
                 align: 'left',
             },
             {
-                title: 'Phone',
+                title: 'Số điện thoại',
                 key: 'phone',
                 dataIndex: 'phone',
                 align: 'left',
@@ -50,19 +51,13 @@ class UserList extends Component {
                 align: 'left',
             },
             {
-                title: 'Status',
-                key: 'status',
-                dataIndex: 'status',
-                align: 'left',
-            },
-            {
-                title: 'Role',
+                title: 'Quyền',
                 key: 'roleCode',
                 dataIndex: 'roleCode',
                 align: 'left',
             },
             {
-                title: 'Action',
+                title: 'Thao tác',
                 key: 'action',
                 align: 'center',
                 render: (_, user) => {
@@ -168,13 +163,13 @@ class UserList extends Component {
     // Delete user
     openDeleteUsersConfirmModal = () => {
         Modal.confirm({
-            title: 'Confirm',
+            title: 'Xác nhận',
             icon: <ExclamationCircleOutlined />,
-            content: 'Are you sure you want to delete the users',
+            content: 'Bạn có chắc muốn xóa những tài khoản này không?',
             onOk: this.handleDeleteUsersOk,
-            okText: 'Delete',
+            okText: 'Xóa',
             okType: 'danger',
-            cancelText: 'Cancel',
+            cancelText: 'Hủy',
             height: 400,
         });
     };
@@ -191,7 +186,7 @@ class UserList extends Component {
         return (
             <>
                 <Space
-                    size="small"
+                    size="medium"
                     style={{
                         display: 'flex',
                         justifyContent: 'flex-end',
@@ -222,9 +217,13 @@ class UserList extends Component {
                         onClick={this.openDeleteUsersConfirmModal}
                     />
                 </Space>
-                <Typography.Title level={4}>List Customers</Typography.Title>
                 <Table
                     className={cx('')}
+                    title={() => (
+                        <div style={{ textAlign: 'center', fontSize: '25px', fontWeight: 'bold' }}>
+                            Danh sách tài khoản
+                        </div>
+                    )}
                     dataSource={users}
                     size="small"
                     rowKey="id"
@@ -243,7 +242,7 @@ class UserList extends Component {
                         onChange: this.handleUserPagination,
                     }}
                 />
-                <Typography.Text style={{ marginRight: '20px' }}>Export options:</Typography.Text>
+                <Typography.Text style={{ marginRight: '20px' }}>Xuất file:</Typography.Text>
                 <Space split={<Divider type="vertical" />}>
                     <Typography.Link onClick={() => this.handleExportExcel(users)}>Excel</Typography.Link>
                     <Typography.Link onClick={() => this.handleExportPDF(users)}>PDF</Typography.Link>
