@@ -2,13 +2,10 @@ import React from 'react';
 import { Button, Checkbox, Form, Grid, Input, theme, Typography, message } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
-// import styles from './Login.module.scss';
-// import classNames from 'classnames/bind';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '~/redux/actions/authAction';
 import { setError, setMessage } from '~/redux/actions/commonAction';
-// const cx = classNames.bind(styles);
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
@@ -21,9 +18,6 @@ export default function Login() {
     const dispatch = useDispatch();
     const msg = useSelector((state) => state.commonReducer.message);
     const err = useSelector((state) => state.commonReducer.error);
-    const jwtToken = useSelector((state) => state.jwtAuthReducer.token);
-    const roleCode = useSelector((state) => state.jwtAuthReducer.roleCode);
-    const isAuthenticated = jwtToken && roleCode;
     useEffect(() => {
         if (msg) {
             message.success(msg);
@@ -71,73 +65,64 @@ export default function Login() {
         },
     };
 
-    if (!isAuthenticated) {
-        return (
-            <section style={styles.section}>
-                <div style={styles.container}>
-                    <div style={styles.header}>
-                        <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="0.464294" width="24" height="24" rx="4.8" fill="#1890FF" />
-                            <path d="M14.8643 3.6001H20.8643V9.6001H14.8643V3.6001Z" fill="white" />
-                            <path d="M10.0643 9.6001H14.8643V14.4001H10.0643V9.6001Z" fill="white" />
-                            <path d="M4.06427 13.2001H11.2643V20.4001H4.06427V13.2001Z" fill="white" />
-                        </svg>
+    return (
+        <section style={styles.section}>
+            <div style={styles.container}>
+                <div style={styles.header}>
+                    <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0.464294" width="24" height="24" rx="4.8" fill="#1890FF" />
+                        <path d="M14.8643 3.6001H20.8643V9.6001H14.8643V3.6001Z" fill="white" />
+                        <path d="M10.0643 9.6001H14.8643V14.4001H10.0643V9.6001Z" fill="white" />
+                        <path d="M4.06427 13.2001H11.2643V20.4001H4.06427V13.2001Z" fill="white" />
+                    </svg>
 
-                        <Title style={styles.title}>Sign in</Title>
-                        <Text style={styles.text}>
-                            Welcome back to Estate Website! Please enter your details below to sign in.
-                        </Text>
-                    </div>
-                    <Form
-                        name="normal_login"
-                        initialValues={{
-                            remember: true,
-                        }}
-                        onFinish={onFinish}
-                        layout="vertical"
-                        requiredMark="optional"
-                    >
-                        <Form.Item
-                            name="userName"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your username!',
-                                },
-                            ]}
-                        >
-                            <Input prefix={<UserOutlined />} placeholder="Username" />
-                        </Form.Item>
-                        <Form.Item
-                            name="password"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your Password!',
-                                },
-                            ]}
-                        >
-                            <Input.Password prefix={<LockOutlined />} type="password" placeholder="Password" />
-                        </Form.Item>
-                        <Form.Item>
-                            <Form.Item name="remember" valuePropName="checked" noStyle>
-                                <Checkbox>Remember me</Checkbox>
-                            </Form.Item>
-                            <Link style={styles.forgotPassword}>Forgot password?</Link>
-                        </Form.Item>
-                        <Form.Item style={{ marginBottom: '0px' }}>
-                            <Button block="true" type="primary" htmlType="submit">
-                                Log in
-                            </Button>
-                            <div style={styles.footer}>
-                                <Text style={styles.text}>Don't have an account?</Text> <Link href="">Sign up now</Link>
-                            </div>
-                        </Form.Item>
-                    </Form>
+                    <Title style={styles.title}>Đăng nhập</Title>
+                    <Text style={styles.text}>Vui lòng nhập tài khoản và mật khẩu của bạn</Text>
                 </div>
-            </section>
-        );
-    } else {
-        return <Navigate to="/" replace />;
-    }
+                <Form
+                    name="normal_login"
+                    initialValues={{
+                        remember: true,
+                    }}
+                    onFinish={onFinish}
+                    layout="vertical"
+                    requiredMark="optional"
+                >
+                    <Form.Item
+                        name="username"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Vui lòng nhập tên đăng nhập của bạn',
+                            },
+                        ]}
+                    >
+                        <Input prefix={<UserOutlined />} placeholder="Tên đăng nhập" />
+                    </Form.Item>
+                    <Form.Item
+                        name="password"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Vui lòng nhập mật khẩu của bạn',
+                            },
+                        ]}
+                    >
+                        <Input.Password prefix={<LockOutlined />} type="password" placeholder="Mật khẩu" />
+                    </Form.Item>
+                    <Form.Item>
+                        <Form.Item name="remember" valuePropName="checked" noStyle>
+                            <Checkbox>Ghi nhớ</Checkbox>
+                        </Form.Item>
+                        <Link style={styles.forgotPassword}>Quên mật khẩu</Link>
+                    </Form.Item>
+                    <Form.Item style={{ marginBottom: '0px' }}>
+                        <Button block="true" type="primary" htmlType="submit">
+                            Đăng nhập
+                        </Button>
+                    </Form.Item>
+                </Form>
+            </div>
+        </section>
+    );
 }

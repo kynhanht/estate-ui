@@ -19,11 +19,11 @@ export const getBuildingById = (id) => async (dispatch) => {
         if (respone.status === 200) {
             dispatch({ type: BUILDING_SET, payload: respone.data });
         } else {
-            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+            dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
         }
     } catch (error) {
         // console.error(error.response.data ? error.response.data.messages : error.message);
-        dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+        dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
     }
     dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
@@ -44,10 +44,10 @@ export const searchBuildings = (buildingSearchRequest, params) => async (dispatc
             };
             dispatch({ type: BUILDING_PAGEABLE, payload: pagination });
         } else {
-            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+            dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
         }
     } catch (error) {
-        dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+        dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
     }
     dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
@@ -59,13 +59,13 @@ export const createBuilding = (building, navigate) => async (dispatch) => {
         const respone = await service.createBuilding(building);
         if (respone.status === 201) {
             dispatch({ type: BUILDING_SET, payload: respone.data });
-            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Building is saved' });
+            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Tạo mới thành công' });
             navigate('/buildings');
         } else {
-            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+            dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
         }
     } catch (error) {
-        dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+        dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
     }
     dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
@@ -77,13 +77,13 @@ export const updateBuilding = (id, building, navigate) => async (dispatch) => {
         const respone = await service.updateBuilding(id, building);
         if (respone.status === 200) {
             dispatch({ type: BUILDING_SET, payload: respone.data });
-            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Building is updated' });
+            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Cập nhập thành công' });
             navigate('/buildings');
         } else {
-            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+            dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
         }
     } catch (error) {
-        dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+        dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
     }
     dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
@@ -94,12 +94,12 @@ export const deleteBuildings = (ids) => async (dispatch) => {
         dispatch({ type: COMMON_LOADING_SET, payload: true });
         const respone = await service.deleteBuildings(ids);
         if (respone.status === 200) {
-            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Buildings is deleted' });
+            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Xóa thành công' });
         } else {
-            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+            dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
         }
     } catch (error) {
-        dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+        dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
     }
     dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
@@ -112,12 +112,12 @@ export const assignBuilding =
             dispatch({ type: COMMON_LOADING_SET, payload: true });
             const respone = await service.assignBuilding({ staffIds, buildingId });
             if (respone.status === 200) {
-                dispatch({ type: COMMON_MESSAGE_SET, payload: 'Building is saved' });
+                dispatch({ type: COMMON_MESSAGE_SET, payload: 'Giao tòa nhà thành công' });
             } else {
-                dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+                dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
             }
         } catch (error) {
-            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+            dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
         }
         dispatch({ type: COMMON_LOADING_SET, payload: false });
     };

@@ -14,6 +14,7 @@ export const BUILDING_STATE_CLEAR = 'BUILDING_STATE_CLEAR';
 export const USER_SET = 'USER_SET';
 export const USERS_SET = 'USERS_SET';
 export const USER_PAGEABLE = 'USER_PAGEABLE';
+export const USER_PROFILE = 'USER_PROFILE';
 export const USER_STATE_CLEAR = 'USER_STATE_CLEAR';
 
 // Building

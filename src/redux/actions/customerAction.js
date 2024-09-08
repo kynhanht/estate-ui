@@ -19,10 +19,10 @@ export const getCustomerById = (id) => async (dispatch) => {
         if (respone.status === 200) {
             dispatch({ type: CUSTOMER_SET, payload: respone.data });
         } else {
-            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+            dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
         }
     } catch (error) {
-        dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+        dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
     }
     dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
@@ -43,10 +43,10 @@ export const searchCustomers = (customerSearchRequest, params) => async (dispatc
             };
             dispatch({ type: CUSTOMER_PAGEABLE, payload: pagination });
         } else {
-            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+            dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
         }
     } catch (error) {
-        dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+        dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
     }
     dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
@@ -58,13 +58,13 @@ export const createCustomer = (customer, navigate) => async (dispatch) => {
         const respone = await service.createCustomer(customer);
         if (respone.status === 201) {
             dispatch({ type: CUSTOMER_SET, payload: respone.data });
-            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Customer is saved' });
+            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Tạo mới thành công' });
             navigate('/customers');
         } else {
-            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+            dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
         }
     } catch (error) {
-        dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+        dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
     }
     dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
@@ -76,13 +76,13 @@ export const updateCustomer = (id, customer, navigate) => async (dispatch) => {
         const respone = await service.updateCustomer(id, customer);
         if (respone.status === 200) {
             dispatch({ type: CUSTOMER_SET, payload: respone.data });
-            dispatch({ type: COMMON_MESSAGE_SET, payload: 'customer is updated' });
+            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Cập nhập thành công' });
             navigate('/customers');
         } else {
-            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+            dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
         }
     } catch (error) {
-        dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+        dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
     }
     dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
@@ -93,12 +93,12 @@ export const deleteCustomers = (ids) => async (dispatch) => {
         dispatch({ type: COMMON_LOADING_SET, payload: true });
         const respone = await service.deleteCustomers(ids);
         if (respone.status === 200) {
-            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Customers is deleted' });
+            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Xóa thành công' });
         } else {
-            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+            dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
         }
     } catch (error) {
-        dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+        dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
     }
     dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
@@ -111,12 +111,12 @@ export const assignCustomer =
             dispatch({ type: COMMON_LOADING_SET, payload: true });
             const respone = await service.assignCustomer({ staffIds, customerId });
             if (respone.status === 200) {
-                dispatch({ type: COMMON_MESSAGE_SET, payload: 'Customer is saved' });
+                dispatch({ type: COMMON_MESSAGE_SET, payload: 'Giao khách hàng thành công' });
             } else {
-                dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+                dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
             }
         } catch (error) {
-            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+            dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
         }
         dispatch({ type: COMMON_LOADING_SET, payload: false });
     };

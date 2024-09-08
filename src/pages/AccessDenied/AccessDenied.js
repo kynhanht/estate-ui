@@ -13,11 +13,11 @@ const AccessDenied = () => {
         <Result
             status="403"
             title="403"
-            subTitle="Sorry, you are not authorized to access this page"
+            subTitle="Bạn không có quyền truy cập vào trang này"
             className={cx('')}
             extra={
                 <Button type="primary" onClick={() => navigate(config.routes.home)}>
-                    Back Home
+                    Quay trở về trang chủ
                 </Button>
             }
         />

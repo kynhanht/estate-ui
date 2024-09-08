@@ -32,20 +32,20 @@ export default class UserService {
         return await api.get(`${API_USER}/roles`);
     };
 
-    changeUserPasswords = async (id, userPasswordRequest) => {
+    changeUserPassword = async (id, userPasswordRequest) => {
         return await api.put(`${API_USER}/${id}/change-password`, userPasswordRequest);
     };
 
-    resetUserPasswords = async (id) => {
+    resetUserPassword = async (id) => {
         return await api.put(`${API_USER}/${id}/reset-password`);
     };
 
-    getProfileUserByUserName = async (userName) => {
-        return await api.get(`${API_USER}/profile/${userName}`);
+    getProfileUserById = async (id) => {
+        return await api.get(`${API_USER}/${id}/profile`);
     };
 
-    updateProfileUser = async (userName, userProfileRequest) => {
-        return await api.put(`${API_USER}/profile/${userName}`, userProfileRequest);
+    updateProfileUser = async (id, userProfileRequest) => {
+        return await api.put(`${API_USER}/${id}/profile`, userProfileRequest);
     };
 
     getStaffsByBuildingId = async (buildingId) => {

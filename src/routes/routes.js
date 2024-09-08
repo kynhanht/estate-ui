@@ -1,28 +1,44 @@
 import Login from '~/pages/Login';
-import Home from '~/components/Home';
-import ListUser from '~/components/users/ListUser';
-import AddOrEditUser from '~/components/users/AddOrEditUser';
-import ListBuilding from '~/components/buildings/ListBuilding';
-import AddOrEditBuilding from '~/components/buildings/AddOrEditBuilding';
-import ListCustomer from '~/components/customers/ListCustomer';
-import AddOrEditCustomer from '~/components/customers/AddOrEditCustomer';
-import config from '~/config';
-import Dashboard from '~/pages/Dashboard';
+import Home from '~/pages/Home';
 
-const publicRoutes = [
-    { path: config.routes.login, component: Login, key: 'login', layout: null },
-    { path: config.routes.home, component: Home, key: 'home', layout: Dashboard },
-    { path: config.routes.listUser, component: ListUser, key: 'listUser', layout: Dashboard },
-    { path: config.routes.addUser, component: AddOrEditUser, key: 'addUser', layout: Dashboard },
-    { path: config.routes.editUser, component: AddOrEditUser, key: 'editUser', layout: Dashboard },
-    { path: config.routes.listBuilding, component: ListBuilding, key: 'listBuilding', layout: Dashboard },
-    { path: config.routes.addBuilding, component: AddOrEditBuilding, key: 'addBuilding', layout: Dashboard },
-    { path: config.routes.editBuilding, component: AddOrEditBuilding, key: 'editBuilding', layout: Dashboard },
-    { path: config.routes.listCustomer, component: ListCustomer, key: 'listCustomer', layout: Dashboard },
-    { path: config.routes.addCustomer, component: AddOrEditCustomer, key: 'addCustomer', layout: Dashboard },
-    { path: config.routes.editCustomer, component: AddOrEditCustomer, key: 'editCustomer', layout: Dashboard },
+import ListUser from '~/pages/UserManagement/ListUser';
+import AddOrEditUser from '~/pages/UserManagement/AddOrEditUser';
+import EditUserProfile from '~/pages/UserManagement/EditUserProfile';
+import ChangeUserPassword from '~/pages/UserManagement/ChangeUserPassword';
+
+import ListBuilding from '~/pages/BuildingManagement/ListBuilding';
+import AddOrEditBuilding from '~/pages/BuildingManagement/AddOrEditBuilding';
+
+import ListCustomer from '~/pages/CustomerManagement/ListCustomer';
+import AddOrEditCustomer from '~/pages/CustomerManagement/AddOrEditCustomer';
+
+import config from '~/config';
+import MainLayout from '~/components/Layout/MainLayout';
+
+const publicRoutes = [{ path: config.routes.login, component: Login, key: 'login', layout: null }];
+
+const privateRoutes = [
+    { path: config.routes.home, component: Home, key: 'home', layout: MainLayout },
+    { path: config.routes.listBuilding, component: ListBuilding, key: 'listBuilding', layout: MainLayout },
+    { path: config.routes.editBuilding, component: AddOrEditBuilding, key: 'editBuilding', layout: MainLayout },
+    { path: config.routes.listCustomer, component: ListCustomer, key: 'listCustomer', layout: MainLayout },
+
+    { path: config.routes.editCustomer, component: AddOrEditCustomer, key: 'editCustomer', layout: MainLayout },
+    { path: config.routes.editUserProfile, component: EditUserProfile, key: 'editUserProfile', layout: MainLayout },
+    {
+        path: config.routes.changePassword,
+        component: ChangeUserPassword,
+        key: 'changeUserPassword',
+        layout: MainLayout,
+    },
 ];
 
-const privateRoutes = [];
+const protectedRouters = [
+    { path: config.routes.listUser, component: ListUser, key: 'listUser', layout: MainLayout },
+    { path: config.routes.editUser, component: AddOrEditUser, key: 'editUser', layout: MainLayout },
+    { path: config.routes.addUser, component: AddOrEditUser, key: 'addUser', layout: MainLayout },
+    { path: config.routes.addBuilding, component: AddOrEditBuilding, key: 'addBuilding', layout: MainLayout },
+    { path: config.routes.addCustomer, component: AddOrEditCustomer, key: 'addCustomer', layout: MainLayout },
+];
 
-export { publicRoutes, privateRoutes };
+export { publicRoutes, privateRoutes, protectedRouters };

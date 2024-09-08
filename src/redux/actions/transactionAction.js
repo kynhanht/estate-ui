@@ -18,11 +18,11 @@ export const getTransactionsByCustomerId = (customerId) => async (dispatch) => {
         if (respone.status === 200) {
             dispatch({ type: TRANSACTIONS_SET, payload: respone.data });
         } else {
-            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+            dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
         }
     } catch (error) {
         console.error(error);
-        dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+        dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
     }
     dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
@@ -34,14 +34,14 @@ export const createTransaction = (transaction, navigate) => async (dispatch) => 
         const respone = await service.createTransaction(transaction);
         if (respone.status === 201) {
             dispatch({ type: TRANSACTION_SET, payload: respone.data });
-            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Transaction is saved' });
+            dispatch({ type: COMMON_MESSAGE_SET, payload: 'Tạo mới thành công' });
             navigate('/customers');
         } else {
-            dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+            dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
         }
     } catch (error) {
         console.error(error);
-        dispatch({ type: COMMON_ERROR_SET, payload: 'An error occurred' });
+        dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });
     }
     dispatch({ type: COMMON_LOADING_SET, payload: false });
 };
