@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Checkbox, Form, Grid, Input, theme, Typography, message } from 'antd';
+import { Button, Form, Grid, Input, theme, Typography, message } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { setError, setMessage } from '~/redux/actions/commonAction';
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
-const { Text, Title, Link } = Typography;
+const { Text, Title } = Typography;
 
 export default function Login() {
     const { token } = useToken();
@@ -110,12 +110,12 @@ export default function Login() {
                     >
                         <Input.Password prefix={<LockOutlined />} type="password" placeholder="Mật khẩu" />
                     </Form.Item>
-                    <Form.Item>
+                    {/* <Form.Item>
                         <Form.Item name="remember" valuePropName="checked" noStyle>
                             <Checkbox>Ghi nhớ</Checkbox>
                         </Form.Item>
                         <Link style={styles.forgotPassword}>Quên mật khẩu</Link>
-                    </Form.Item>
+                    </Form.Item> */}
                     <Form.Item style={{ marginBottom: '0px' }}>
                         <Button block="true" type="primary" htmlType="submit">
                             Đăng nhập

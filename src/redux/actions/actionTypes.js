@@ -2,6 +2,7 @@
 
 export const LOGIN_SET = 'LOGIN_SET';
 export const LOGOUT_SET = 'LOGOUT_SET';
+export const AUTH_SET = 'AUTH_SET';
 
 // Building
 export const BUILDING_SET = 'BUILDING_SET';

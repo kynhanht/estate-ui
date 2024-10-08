@@ -1,4 +1,4 @@
-import { LOGIN_SET, LOGOUT_SET } from '~/redux/actions/actionTypes';
+import { AUTH_SET, LOGIN_SET, LOGOUT_SET } from '~/redux/actions/actionTypes';
 
 const initialState = {
     token: null,
@@ -21,6 +21,11 @@ const jwtAuthReducer = (state = initialState, { type, payload }) => {
                 fullName: null,
                 username: null,
                 isAuthenticated: false,
+            };
+        case AUTH_SET:
+            return {
+                ...state,
+                ...payload,
             };
         default:
             return state;

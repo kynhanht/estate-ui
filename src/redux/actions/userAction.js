@@ -8,6 +8,7 @@ import {
     COMMON_ERROR_SET,
     COMMON_MESSAGE_SET,
     USER_PROFILE,
+    AUTH_SET,
 } from './actionTypes';
 
 const service = new UserSerive();
@@ -144,6 +145,7 @@ export const updateProfileUser = (id, userProfileRequest) => async (dispatch) =>
         const respone = await service.updateProfileUser(id, userProfileRequest);
         if (respone.status === 200) {
             dispatch({ type: USER_PROFILE, payload: respone.data });
+            dispatch({ type: AUTH_SET, payload: { fullName: respone.data.fullName } });
             dispatch({ type: COMMON_MESSAGE_SET, payload: 'Đã cập nhập thông tin' });
         } else {
             dispatch({ type: COMMON_ERROR_SET, payload: 'Có lỗi xảy ra' });

@@ -215,7 +215,6 @@ const MainLayout = ({ children }) => {
                     theme="light"
                     collapsible
                     collapsed={collapsed}
-                    width={250}
                     onCollapse={(value) => {
                         value ? setMarginLeft(80) : setMarginLeft(250);
                         setCollapsed(value);
